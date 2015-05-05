@@ -9,6 +9,9 @@ Fork
   bower install
 
   npm install
+  
+  grunt build
+should get an error stating you need to add a platform for cordova.
 
   cordova platform add android
 
