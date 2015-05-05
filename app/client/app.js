@@ -19,7 +19,20 @@
 //    }
 //  });
 //})
-angular.module('starter', ['ionic', "ngCordova", 'config', 'LocalStorageModule', 'starter.controllers'])
+angular.module('starter', [
+	'ionic',
+	"ngCordova",
+	'config',
+	'LocalStorageModule',
+
+	'starter.services',
+	/*
+	 * Feature Areas
+	 */
+	'starter.intro',
+	'starter.home',
+	'starter.auth',
+	'starter.contacts'])
 
 	.run(function($ionicPlatform, $rootScope, localStorageService, $location, $timeout) {
 		$ionicPlatform.ready(function() {
@@ -80,24 +93,24 @@ angular.module('starter', ['ionic', "ngCordova", 'config', 'LocalStorageModule',
   //})
 			.state('loading', {
 				url: '/loading',
-				templateUrl: 'templates/loading.html'
+				templateUrl: '/client/loading.html'
 			})
 
 			.state('intro', {
 				url: '/intro',
-				templateUrl: 'templates/intro.html',
+				templateUrl: '/client/intro/intro.html',
 				controller: 'IntroCtrl'
 			})
 
 			.state('home', {
 				url: '/home',
-				templateUrl: 'templates/home.html',
+				templateUrl: '/client/home/home.html',
 				controller: 'HomeCtrl'
 			})
 
 			.state('contacts', {
 				url: '/contacts',
-				templateUrl: 'templates/contacts.html',
+				templateUrl: '/client/contacts/contacts.html',
 				controller: 'ContactsCtrl'
 			});
 
