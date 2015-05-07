@@ -1,9 +1,8 @@
 node_modules
 www
-.idea
-.temp
+.tmp
 .sass-cache
-app/bower_components
+app/lib
 coverage
 platforms
 plugins
@@ -11,5 +10,6 @@ plugins
 *.swo
 *.log
 *.DS_Store
+_
 
-app/scripts/configuration.js
+app/scripts/config.js

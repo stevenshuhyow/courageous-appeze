@@ -1,5 +1,5 @@
 "use strict";
-angular.module('starter.services', [])
+angular.module('LovedOneNotifier.services', [])
 
 	.factory('Auth', function ($http, $location, $window) {
 		// Don't touch this Auth service!!!
@@ -47,4 +47,38 @@ angular.module('starter.services', [])
 			isAuth: isAuth,
 			signout: signout
 		};
+
+
+	})
+	.factory('Messages', function ($http, $location, $window) {
+
+		var getMessage = function (user) {
+			var data = {
+				userId: 'jmyeg',
+				messages:[{
+					contactId:'2',
+					contactPhone:'8046831201',
+					text: 'happy bday from antisocialite!',
+					date:'asdf'
+				},{
+					contactId:'3',
+					contactPhone:'9254870772',
+					text: 'happy bday from antisocialite!',
+					date:'asdf'
+				},{
+					contactId:'2',
+					contactPhone:'8046831652',
+					text: 'happy bday from antisocialite!',
+					date:'asdf'
+				}
+				]
+			};
+			return data;
+		};
+
+		return {
+			messages: getMessage
+		};
+
+
 	});
