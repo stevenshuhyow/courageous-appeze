@@ -21,6 +21,3 @@ http://thejackalofjavascript.com/phonegap-3-cli-setup-mac-windows/
 once complete you should be able run: 
 
   grunt emulate
-
-
-
