@@ -1,0 +1,41 @@
+
+<ion-view hide-back-button="true" title="antiSocialite">
+    <ion-nav-buttons side="left">
+        <button class="button button-icon icon ion-close-circled"
+                ng-click="shouldShowDelete = !shouldShowDelete">
+
+        </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-clear no-animation" ng-click="sendAll()">
+            Send All
+        </button>
+    </ion-nav-buttons>
+    <ion-content padding="true">
+        <ion-list ng-show="lonConfig.isEnabled"
+                  show-delete="shouldShowDelete"
+                  can-swipe="listCanSwipe">
+            <ion-item ng-repeat="message in allMessages.messages"
+                      class="item-avatar item-remove-animate"
+                      href="#/queue/{{message.id}}">
+                      <!--ng-click="edit(message)">-->
+                      <!--href="#/item/{{message.id}}" -->
+
+                <img ng-src="">
+                <h2>{{message.contactPhone}}</h2>
+                <p>{{message.text}}</p>
+                <ion-option-button class="button-positive"
+                                   ng-click="edit(message)">
+                    Edit
+                </ion-option-button>
+                <ion-delete-button class="ion-minus-circled"
+                                   ng-click="onItemDelete(message)">
+                </ion-delete-button>
+
+            </ion-item>
+        </ion-list>
+    </ion-content>
+    <ion-footer-bar class="bar-assertive">
+        <h5 class="center-footer">Made @ HackReactor</h5>
+    </ion-footer-bar>
+</ion-view>

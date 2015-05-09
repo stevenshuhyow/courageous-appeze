@@ -1,3 +1,23 @@
+<ion-view hide-back-button="true" title="antiSocialite">
+    <ion-content padding="true">
+
+        <div class="list card">
+            <div class="item item-toggle">
+                Enable Text Bot
+                <label class="toggle toggle-assertive">
+                    <input type="checkbox" ng-model="lonConfig.isEnabled" ng-checked="lonConfig.isEnabled == 'true' ? true : false">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </ion-content>
+    <ion-footer-bar class="bar-assertive">
+        <h5 class="center-footer">Made @ HackReactor</h5>
+    </ion-footer-bar>
+</ion-view>
+
 <!--<ion-view hide-back-button="true" title="Loved One Notifier">-->
 <!--<ion-content padding="true">-->
 
@@ -90,129 +110,3 @@
 <!--<h5 class="center-footer">Made @ Hack Reactor</h5>-->
 <!--</ion-footer-bar>-->
 <!--</ion-view>-->
-<ion-view hide-back-button="true" title="antiSocialite">
-
-    <ion-nav-buttons side="right">
-        <button class="button button-dark no-animation" ng-click="sendAll()">
-            Send All
-        </button>
-    </ion-nav-buttons>
-    <ion-content padding="true">
-
-        <div class="list card">
-
-            <div class="item item-toggle">
-                Enable Text Bot
-                <label class="toggle toggle-assertive">
-                    <input type="checkbox" ng-model="lonConfig.isEnabled" ng-checked="lonConfig.isEnabled == 'true' ? true : false">
-                    <div class="track">
-                        <div class="handle"></div>
-                    </div>
-                </label>
-            </div>
-            <!--<div class="item item-divider">-->
-            <!--Current Battery Status-->
-            <!--</div>-->
-            <!--<div class="item item-text-wrap">-->
-            <!--<h3>Battery Charge : {{lonConfig.level}}</h3>-->
-            <!--<h3> {{lonConfig.isPlugged ? 'Device is charging' : 'Device is running on Battery'}}</h3>-->
-            <!--</div>-->
-        </div>
-        <!--<h3 class="">Configure</h3>-->
-
-        <!--<div class="list card" ng-show="error">-->
-        <!--<div class="item item-text-wrap">-->
-        <!--{{error}}-->
-        <!--</div>-->
-        <!--</div>-->
-
-        <!--<div class="list card">-->
-        <!--<div class="item item-divider">-->
-        <!--Threshold-->
-        <!--</div>-->
-        <!--<div class="item item-text-wrap">-->
-        <!--<div class="range">-->
-        <!--<i class="icon ion-ios7-bolt-outline"></i>-->
-        <!--<input type="range" name="volume" min="0" max="100" value="{{lonConfig.threshold}}" ng-model="lonConfig.threshold">-->
-        <!--<i class="icon ion-ios7-bolt"></i>-->
-        <!--</div>-->
-
-        <!--A message will be sent when the battery % is equal to {{lonConfig.threshold}}-->
-
-        <!--</div>-->
-
-        <!--</div>-->
-
-        <!--<div class="list card">-->
-        <!--<div class="item item-divider">-->
-        <!--Message-->
-        <!--</div>-->
-        <!--<div class="item item-text-wrap">-->
-        <!--<h3> What Message should be sent?</h3>-->
-        <!--<div class="list list-inset">-->
-        <!--<label class="item item-input">-->
-        <!--<i class="icon ion-email placeholder-icon"></i>-->
-        <!--<input type="text" ng-model="lonConfig.message" placeholder="My Battery is Dying.. TTYL.">-->
-        <!--</label>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
-
-
-        <!--<div class="card list">-->
-        <!--<div class="item item-divider">-->
-        <!--Manage Loved Ones-->
-        <!--</div>-->
-        <!--<div class="item item-text-wrap">-->
-        <!--<h3 ng-show="lonConfig.savedContacts.length > 0">SMS will be sent to : </h3>-->
-        <!--<h3 ng-hide="lonConfig.savedContacts.length > 0">Select Contacts to whom the SMS needs to be sent</h3>-->
-
-        <!--<ul class="list" ng-show="lonConfig.savedContacts.length > 0">-->
-        <!--<li class="item" ng-repeat="c in lonConfig.savedContacts track by $index">-->
-        <!--<h2>{{c.name}}</h2>-->
-        <!--<p>{{c.number}}</p>-->
-        <!--</li>-->
-        <!--</ul>-->
-
-        <!--<button class="button button-full button-dark" ng-click="toContacts()">-->
-        <!--Show my Contacts-->
-        <!--</button>-->
-
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div  class="list" ng-repeat="message in allMessages.messages">-->
-
-
-        <!--<div class="item item-avatar item-checkbox-right">-->
-        <!--<img src="">-->
-        <!--<h2>{{ message.contactPhone }}</h2>-->
-        <!--<p>{{ message.text }}</p>-->
-        <!--&lt;!&ndash;<label class="checkbox">&ndash;&gt;-->
-        <!--&lt;!&ndash;<input type="checkbox">&ndash;&gt;-->
-        <!--&lt;!&ndash;</label>&ndash;&gt;-->
-        <!--</div>-->
-        <!--</div>-->
-        <ion-list ng-show="lonConfig.isEnabled"
-                  show-delete="shouldShowDelete"
-                  can-swipe="listCanSwipe">
-            <ion-item ng-repeat="message in allMessages.messages"
-                      class="item-avatar">
-
-                <img ng-src="">
-                <h2>{{message.contactPhone}}</h2>
-                <p>{{message.text}}</p>
-                <ion-option-button class="button-info"
-                                   ng-click="edit(item)">
-                    Edit
-                </ion-option-button>
-                <ion-delete-button class="ion-minus-circled"
-                                   ng-click="message.splice($index, 1)">
-                </ion-delete-button>
-
-            </ion-item>
-        </ion-list>
-    </ion-content>
-    <ion-footer-bar class="bar-assertive">
-        <h5 class="center-footer">antiSocialite</h5>
-    </ion-footer-bar>
-</ion-view>

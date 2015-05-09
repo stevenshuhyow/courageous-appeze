@@ -20,7 +20,7 @@ var Orchestrator = require('orchestrator');
 
 var BASES = {
   android: 'res',
-  ios: 'LovedOneNotifier/Resources'
+  ios: 'antiSocialite/Resources'
 };
 var RESOURCE_DIR = 'resources';
 
