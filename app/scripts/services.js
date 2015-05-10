@@ -92,8 +92,6 @@ angular.module('antiSocialite.services', [])
 
 	.factory('Messages', function ($http) {
 
-		var getMessage = function () {
-			//$http.get();
 			var data = {
 				userId: 'jmyeg',
 				messages:[{
@@ -117,12 +115,62 @@ angular.module('antiSocialite.services', [])
 				}
 				]
 			};
+		var getMessage = function () {
+			//$http.get();
 			return data;
 		};
 
+		var updateMessage = function(message){
+			data.messages.filter(function(val){
+				if(val.id === message.id){
+					val.text = message.text;
+				}
+			});
+		};
+
+		var deleteMessage = function(message){
+			data.messages.splice(data.messages.indexOf(message),1);
+		};
+
 		return {
-			messages: getMessage
+			messages: getMessage,
+			update: updateMessage,
+			remove: deleteMessage
 		};
 
 
 	});
+
+//sample factory from Ionic's site.
+/**
+ * The Projects factory handles saving and loading projects
+ * from local storage, and also lets us save and load the
+ * last active project index.
+ */
+//.factory('Projects', function() {
+//	return {
+//		all: function() {
+//			var projectString = window.localStorage['projects'];
+//			if(projectString) {
+//				return angular.fromJson(projectString);
+//			}
+//			return [];
+//		},
+//		save: function(projects) {
+//			window.localStorage['projects'] = angular.toJson(projects);
+//		},
+//		newProject: function(projectTitle) {
+//			// Add a new project
+//			return {
+//				title: projectTitle,
+//				tasks: []
+//			};
+//		},
+//		getLastActiveIndex: function() {
+//			return parseInt(window.localStorage['lastActiveProject']) || 0;
+//		},
+//		setLastActiveIndex: function(index) {
+//			window.localStorage['lastActiveProject'] = index;
+//		}
+//	}
+//})

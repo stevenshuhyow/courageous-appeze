@@ -44,7 +44,7 @@ angular.module('antiSocialite', ['ionic', 'config', 'LocalStorageModule', 'antiS
 					}
 					if (toState.name === 'intro') {
 						if (skipIntro) {
-							location.href = '#/queue';
+							location.href = '#/queue/messages';
 						}
 					}
 				});
@@ -54,7 +54,7 @@ angular.module('antiSocialite', ['ionic', 'config', 'LocalStorageModule', 'antiS
 			if ($location.$$url === '/loading') {
 				$timeout(function() {
 					if (skipIntro) {
-						location.href = '#/queue';
+						location.href = '#/queue/messages';
 					} else {
 						location.href = '#/intro';
 					}
@@ -88,10 +88,15 @@ angular.module('antiSocialite', ['ionic', 'config', 'LocalStorageModule', 'antiS
 			.state('queue', {
 				url: '/queue',
 				templateUrl: 'templates/queue.html',
+				abstract: true
+			})
+			.state('queue.messages', {
+				url: '',
+				templateUrl: 'templates/messages.html',
 				controller: 'QueueCtrl'
 			})
 			.state('queue.message', {
-				url: '/message/:id',
+				url: '/messages/:id',
 				templateUrl: 'templates/message.html',
 				controller: 'MessageCtrl'
 			})

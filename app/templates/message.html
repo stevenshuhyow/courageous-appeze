@@ -2,20 +2,23 @@
 <ion-view hide-back-button="false" title="antiSocialite">
 
     <ion-content padding="true">
-        <!--<form class="list" ng-submit="update()">-->
-            <!--<label class="item item-input">-->
-                <!--<input type="text" placeholder="Contact Name" ng-model="message.name">-->
-            <!--</label>-->
-            <!--<label class="item item-input">-->
-                <!--<input type="text" placeholder="" ng-model="message.contactPhone">-->
-            <!--</label>-->
-            <!--<label class="item item-input">-->
-                <!--<textarea placeholder="Content" ng-model="message.content"></textarea>-->
-            <!--</label>-->
-            <!--<label class="item item-input">-->
-                <!--<input type="date" ng-model="message.date" >-->
-            <!--</label>-->
-        <!--</form>-->
+        <form class="list" ng-submit="update()">
+            <label class="item item-input">
+                <input type="text" placeholder="Contact Name" ng-model="message.name">
+            </label>
+            <label class="item item-input">
+                <input type="text" placeholder="" ng-model="message.contactPhone">
+            </label>
+            <label class="item item-input">
+                <textarea placeholder="Content" ng-model="message.text"></textarea>
+            </label>
+            <label class="item item-input">
+                <input type="date" ng-model="message.date" >
+            </label>
+            <button value="send" ng-click="send()" class="button button-full button-assertive">Send</button>
+            <!--<button value="save" type="submit" class="button button-full button-stable">Save</button>-->
+            <button value="delete" ng-click="onItemDelete(message)" class="button button-full button-dark">Delete</button>
+        </form>
     </ion-content>
     <ion-footer-bar class="bar-assertive">
         <h5 class="center-footer">Made @ HackReactor</h5>

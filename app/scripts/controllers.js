@@ -1,20 +1,20 @@
 'use strict';
 angular.module('antiSocialite.controllers', [])
 
-	.controller('IntroCtrl', function($scope, $state, $ionicSlideBoxDelegate, localStorageService) {
+	.controller('IntroCtrl', function ($scope, $state, $ionicSlideBoxDelegate, localStorageService) {
 
-		$scope.startApp = function() {
+		$scope.startApp = function () {
 			localStorageService.set('skip', true);
-			$state.go('queue');
+			$state.go('queue.messages');
 		};
-		$scope.next = function() {
+		$scope.next = function () {
 			$ionicSlideBoxDelegate.next();
 		};
-		$scope.previous = function() {
+		$scope.previous = function () {
 			$ionicSlideBoxDelegate.previous();
 		};
 
-		$scope.slideChanged = function(index) {
+		$scope.slideChanged = function (index) {
 			$scope.slideIndex = index;
 		};
 	})
@@ -56,7 +56,7 @@ angular.module('antiSocialite.controllers', [])
 	//	});
 	//})
 
-	.controller('HomeCtrl', function($ionicPlatform, $scope, $state, localStorageService) {
+	.controller('HomeCtrl', function ($ionicPlatform, $scope, $state, localStorageService) {
 
 		$scope.lonConfig = {};
 		$scope.lonConfig.isEnabled = localStorageService.get('lonConfig.isEnabled') === 'true' ? true : false;
@@ -65,17 +65,17 @@ angular.module('antiSocialite.controllers', [])
 		localStorageService.bind($scope, 'lonConfig.isEnabled', $scope.lonConfig.isEnabled);
 		localStorageService.bind($scope, 'lonConfig.savedContacts', $scope.lonConfig.savedContacts);
 
-		$scope.toContacts = function() {
+		$scope.toContacts = function () {
 			$state.go('contacts');
 		};
 
-		$ionicPlatform.ready(function() {
+		$ionicPlatform.ready(function () {
 
 		});
 
 	})
 
-	.controller('QueueCtrl', function($scope, $ionicPlatform,$ionicLoading, $state, localStorageService, Messages){
+	.controller('QueueCtrl', function ($scope, $ionicPlatform, $ionicLoading, $state, localStorageService, Messages) {
 		$scope.shouldShowDelete = false;
 		//$scope.listCanEdit = true;
 		$scope.listCanSwipe = true;
@@ -83,19 +83,16 @@ angular.module('antiSocialite.controllers', [])
 		$scope.lonConfig.isEnabled = localStorageService.get('lonConfig.isEnabled') === 'true' ? true : false;
 		$scope.allMessages = Messages.messages();
 
-		$scope.toContacts = function() {
-			$state.go('contacts');
+		$scope.config = function () {
+			$state.go('home');
 		};
 
-		$scope.edit = function(item) {
-			alert('Edit Item: ' + item.id);
-			$state.go('queue.message');
-		};
-		$scope.share = function(item) {
-			alert('Share Item: ' + item.id);
+		$scope.edit = function (item) {
+			$state.go('queue.message', {id: item.id});
 		};
 
-		$scope.onItemDelete = function(item) {
+
+		$scope.onItemDelete = function (item) {
 			$scope.allMessages.messages.splice($scope.allMessages.messages.indexOf(item), 1);
 		};
 
@@ -125,7 +122,7 @@ angular.module('antiSocialite.controllers', [])
 		//});
 
 
-		$ionicPlatform.ready(function() {
+		$ionicPlatform.ready(function () {
 
 			$scope.sendAll = function () {
 
@@ -163,12 +160,25 @@ angular.module('antiSocialite.controllers', [])
 		});
 	})
 
-	.controller('MessageCtrl', function($scope, $ionicPlatform,$ionicLoading, $state, $stateParams , localStorageService, Messages){
-		//var a = $stateParams.id;
-		////$scope.message = Messages.messages().messages.indexOf('id', $scope.id);
-		//$scope.update = function(){
+	.controller('MessageCtrl', function ($scope, $ionicPlatform, $ionicLoading, $state, $stateParams, localStorageService, Messages) {
+		var a = $stateParams.id;
+		Messages.messages().messages.filter(function(val){
+			if(val.id == $stateParams.id){
+				$scope.message = val;
+			}
+		});
 
-		//};
+		//$scope.allMessages.messages.filter(function (val) {
+		//	if (val.id == $stateParams.id) {
+		//		$scope.message = val;
+		//	}
+		//});
+
+		$scope.onItemDelete = function (item) {
+			Messages.remove(item);
+			$state.go('queue.messages');
+				//.messages.splice($scope.allMessages.messages.indexOf(item), 1);
+		};
 		//$ionicModal.fromTemplateUrl('templates/message.html', {
 		//	scope: $scope,
 		//	animation: 'slide-in-up'
@@ -207,7 +217,7 @@ angular.module('antiSocialite.controllers', [])
 		//};
 
 
-		$ionicPlatform.ready(function() {
+		$ionicPlatform.ready(function () {
 
 			$scope.send = function () {
 
@@ -227,19 +237,19 @@ angular.module('antiSocialite.controllers', [])
 					alert('Message Failed:' + e);
 				};
 				var _u = [];
-					sms.send($scope.allMessages.messages[i].contactPhone,
-					$scope.allMessages.messages[i].text, options, success, error);
+				sms.send($scope.message.contactPhone,
+					$scope.message.text, options, success, error);
 
-					window.plugin.notification.local.add({
-						autoCancel: true,
-						message: 'Messages sent to : ' + _u.join(', ')
-					});
+				window.plugin.notification.local.add({
+					autoCancel: true,
+					message: 'Messages sent to : ' + _u.join(', ')
+				});
 
 			};
 		});
 	})
 
-	.controller('ContactsCtrl', function($scope, $ionicLoading, localStorageService) {
+	.controller('ContactsCtrl', function ($scope, $ionicLoading, localStorageService) {
 
 		$ionicLoading.show({
 			template: 'Loading Contacts...'
@@ -253,7 +263,7 @@ angular.module('antiSocialite.controllers', [])
 
 		function onSuccess(contacts) {
 
-			var _contacts = contacts.filter(function(c) {
+			var _contacts = contacts.filter(function (c) {
 				return (c.displayName && c.phoneNumbers);
 			});
 
@@ -285,7 +295,7 @@ angular.module('antiSocialite.controllers', [])
 		// get the contacts
 		navigator.contacts.find(fields, onSuccess, onError, options);
 
-		$scope.handleContact = function(c) {
+		$scope.handleContact = function (c) {
 			var savedContacts = localStorageService.get('lonConfig.savedContacts');
 			savedContacts = savedContacts ? savedContacts : [];
 
@@ -302,7 +312,7 @@ angular.module('antiSocialite.controllers', [])
 
 			} else {
 				// remove from localStorage
-				savedContacts.forEach(function(k, v) {
+				savedContacts.forEach(function (k, v) {
 					if (k.id === c.id) {
 						savedContacts.splice(v, 1);
 					}
