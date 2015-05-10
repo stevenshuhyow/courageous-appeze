@@ -1,116 +1,130 @@
 'use strict';
-angular.module('LovedOneNotifier.controllers', [])
+angular.module('antiSocialite.controllers', [])
 
-	.controller('IntroCtrl', function($scope, $state, $ionicSlideBoxDelegate, localStorageService) {
+	.controller('IntroCtrl', function ($scope, $state, $ionicSlideBoxDelegate, localStorageService) {
 
-		$scope.startApp = function() {
+		$scope.startApp = function () {
 			localStorageService.set('skip', true);
-			$state.go('home');
+			$state.go('queue.messages');
 		};
-		$scope.next = function() {
+		$scope.next = function () {
 			$ionicSlideBoxDelegate.next();
 		};
-		$scope.previous = function() {
+		$scope.previous = function () {
 			$ionicSlideBoxDelegate.previous();
 		};
 
-		$scope.slideChanged = function(index) {
+		$scope.slideChanged = function (index) {
 			$scope.slideIndex = index;
 		};
 	})
 
-	.controller('HomeCtrl', function($ionicPlatform, $scope, $state, localStorageService, Messages) {
-		$scope.shouldShowDelete = false;
-		$scope.shouldShowReorder = false;
-		$scope.listCanSwipe = true;
+	//.controller('LoginCtrl', function($scope, $http, $state, AuthenticationService) {
+	//	$scope.message = '';
+	//
+	//	$scope.user = {
+	//		username: null,
+	//		password: null
+	//	};
+	//
+	//	$scope.login = function() {
+	//		AuthenticationService.login($scope.user);
+	//	};
+	//
+	//	$scope.$on('event:auth-loginRequired', function(e, rejection) {
+	//		console.log('handling login required');
+	//		$scope.loginModal.show();
+	//	});
+	//
+	//	$scope.$on('event:auth-loginConfirmed', function() {
+	//		$scope.username = null;
+	//		$scope.password = null;
+	//		$scope.loginModal.hide();
+	//	});
+	//
+	//	$scope.$on('event:auth-login-failed', function(e, status) {
+	//		var error = 'Login failed.';
+	//		if (status === 401) {
+	//			error = 'Invalid Username or Password.';
+	//		}
+	//		$scope.message = error;
+	//	});
+	//
+	//	$scope.$on('event:auth-logout-complete', function() {
+	//		console.log('logout complete');
+	//		$state.go('app.home', {}, {reload: true, inherit: false});
+	//	});
+	//})
+
+	.controller('HomeCtrl', function ($ionicPlatform, $scope, $state, localStorageService) {
+
 		$scope.lonConfig = {};
 		$scope.lonConfig.isEnabled = localStorageService.get('lonConfig.isEnabled') === 'true' ? true : false;
 		$scope.lonConfig.savedContacts = localStorageService.get('lonConfig.savedContacts') || [];
-		$scope.lonConfig.threshold = parseInt(localStorageService.get('lonConfig.threshold')) || 15;
-		$scope.lonConfig.message = localStorageService.get('lonConfig.message');
-		$scope.allMessages = Messages.messages();
-
-		if ($scope.lonConfig.message === null || $scope.lonConfig.message === 'null') {
-			$scope.lonConfig.message = 'My Battery is Dying.. TTYL.';
-		}
 
 		localStorageService.bind($scope, 'lonConfig.isEnabled', $scope.lonConfig.isEnabled);
-		localStorageService.bind($scope, 'lonConfig.threshold', $scope.lonConfig.threshold);
-		localStorageService.bind($scope, 'lonConfig.message', $scope.lonConfig.message);
 		localStorageService.bind($scope, 'lonConfig.savedContacts', $scope.lonConfig.savedContacts);
-		localStorageService.bind($scope, 'lonConfig.messages', $scope.lonConfig.messages);
 
-		$scope.toContacts = function() {
+		$scope.toContacts = function () {
 			$state.go('contacts');
 		};
 
-		$ionicPlatform.ready(function() {
-			$scope.onBatteryStatus = function(info) {
+		$ionicPlatform.ready(function () {
 
-				$scope.lonConfig.level = info.level;
-				$scope.lonConfig.isPlugged = info.isPlugged;
+		});
 
-				if (info.isPlugged) {
-					localStorageService.set('lonConfig.lastSentBattery', null);
-				}
+	})
 
-				if ($scope.lonConfig.isEnabled && !info.isPlugged && info.level <= parseInt(localStorageService.get('lonConfig.threshold'))) {
-					$scope.sendSMS(info);
+	.controller('QueueCtrl', function ($scope, $ionicPlatform, $ionicLoading, $state, localStorageService, Messages) {
+		$scope.shouldShowDelete = false;
+		//$scope.listCanEdit = true;
+		$scope.listCanSwipe = true;
+		$scope.lonConfig = {};
+		$scope.lonConfig.isEnabled = localStorageService.get('lonConfig.isEnabled') === 'true' ? true : false;
+		$scope.allMessages = Messages.messages();
 
-				}
+		$scope.config = function () {
+			$state.go('home');
+		};
 
-				$scope.$apply();
+		$scope.edit = function (item) {
+			$state.go('queue.message', {id: item.id});
+		};
 
-			};
 
-			window.addEventListener('batterystatus', $scope.onBatteryStatus, false);
-			//window.addEventListener('initSend', $scope.sendAllSMS, false);
+		$scope.onItemDelete = function (item) {
+			$scope.allMessages.messages.splice($scope.allMessages.messages.indexOf(item), 1);
+		};
 
-			$scope.sendSMS = function(info) {
+		//$ionicModal.fromTemplateUrl('templates/message.html', {
+		//	scope: $scope,
+		//	animation: 'slide-in-up'
+		//}).then(function(modal) {
+		//	$scope.modal = modal;
+		//});
+		//$scope.openModal = function() {
+		//	$scope.modal.show();
+		//};
+		//$scope.closeModal = function() {
+		//	$scope.modal.hide();
+		//};
+		////Cleanup the modal when we're done with it!
+		//$scope.$on('$destroy', function() {
+		//	$scope.modal.remove();
+		//});
+		//// Execute action on hide modal
+		//$scope.$on('modal.hidden', function() {
+		//	// Execute action
+		//});
+		//// Execute action on remove modal
+		//$scope.$on('modal.removed', function() {
+		//	// Execute action
+		//});
 
-				var lastSentBattery = localStorageService.get('lonConfig.lastSentBattery');
 
-				lastSentBattery = lastSentBattery === 'null' ? null : lastSentBattery;
+		$ionicPlatform.ready(function () {
 
-				function _sms(number) {
-					var msg = localStorageService.get('lonConfig.message');
-
-					var message = msg !== 'null' ? msg : 'My Battery is Dying.. TTYL.';
-					var intent = ''; //leave empty for sending sms using default intent
-					var success = function() {
-						//alert('Message sent successfully');
-					};
-					var error = function() {
-						//alert('Message Failed:' + e);
-					};
-					sms.send(number, message, intent, success, error);
-				}
-
-				if ((lastSentBattery === null) || parseInt(lastSentBattery) < info.level) {
-					var savedContacts = localStorageService.get('lonConfig.savedContacts');
-					savedContacts = savedContacts ? savedContacts : [];
-					var _u = [];
-
-					for (var i = 0; i < savedContacts.length; i++) {
-						_u.push(savedContacts[i].name);
-						_sms(savedContacts[i].number);
-					}
-
-					if (_u.length > 0) {
-						window.plugin.notification.local.add({
-							autoCancel: true,
-							message: 'Battery Notification Message sent to : ' + _u.join(', ')
-						});
-					}
-					localStorageService.set('lonConfig.lastSentBattery', info.level);
-				}
-			};
-
-			$scope.sendAll = function() {
-				//var number = document.getElementById('numberTxt').value;
-				//var message = document.getElementById('messageTxt').value;
-				//alert(number);
-				//alert(message);
+			$scope.sendAll = function () {
 
 				//CONFIGURATION
 				var options = {
@@ -121,8 +135,12 @@ angular.module('LovedOneNotifier.controllers', [])
 					}
 				};
 
-				var success = function () { alert('Message sent successfully'); };
-				var error = function (e) { alert('Message Failed:' + e); };
+				var success = function () {
+					alert('Message sent successfully');
+				};
+				var error = function (e) {
+					alert('Message Failed:' + e);
+				};
 				var _u = [];
 
 				for (var i = 0; i < $scope.allMessages.messages.length; i++) {
@@ -133,62 +151,105 @@ angular.module('LovedOneNotifier.controllers', [])
 				}
 
 				if (_u.length > 0) {
-
+					window.plugin.notification.local.add({
+						autoCancel: true,
+						message: 'Messages sent to : ' + _u.join(', ')
+					});
 				}
-			};
-
-			$scope.sendAllSMS = function() {
-
-				//var lastSentBattery = localStorageService.get('lonConfig.lastSentBattery');
-
-				//lastSentBattery = lastSentBattery === 'null' ? null : lastSentBattery;
-
-				function _sms(correspond) {
-					var msg = correspond.text;
-
-					var message = msg !== 'null' ? msg : 'Yo';
-					var intent = ''; //leave empty for sending sms using default intent
-					var success = function() {
-						console.log('Message sent successfully' + message +', '+ correspond.contactPhone );
-					};
-					var error = function() {
-						console.log('Message Failed:' + e);
-					};
-					//sms.send(number, message, intent, success, error);
-					//$cordovaSms
-					//	.send(correspond.contactPhone, message)
-					//	.then(function() {
-					//		// Success! SMS was sent
-					//		console.log("success sms sent");
-					//	}, function(error) {
-					//		// An error occurred
-					//		console.log("error", error)
-					//	});
-				}
-
-				//if ((lastSentBattery === null) || parseInt(lastSentBattery) < info.level) {
-				//	var savedContacts = localStorageService.get('lonConfig.savedContacts');
-				//	savedContacts = savedContacts ? savedContacts : [];
-				var _u = [];
-
-				for (var i = 0; i < $scope.allMessages.messages.length; i++) {
-					_u.push($scope.allMessages.messages[i].contactPhone);
-					_sms($scope.allMessages.messages[i]);
-				}
-
-				if (_u.length > 0) {
-					//window.plugin.notification.local.add({
-					//	autoCancel: true,
-					//	message: 'Messages sent to : ' + _u.join(', ')
-					//});
-				}
-				//	localStorageService.set('lonConfig.lastSentBattery', info.level);
-				//}
 			};
 		});
-
 	})
-	.controller('ContactsCtrl', function($scope, $ionicLoading, localStorageService) {
+
+	.controller('MessageCtrl', function ($scope, $ionicPlatform, $ionicLoading, $state, $stateParams, localStorageService, Messages) {
+		var a = $stateParams.id;
+		Messages.messages().messages.filter(function(val){
+			if(val.id == $stateParams.id){
+				$scope.message = val;
+			}
+		});
+
+		//$scope.allMessages.messages.filter(function (val) {
+		//	if (val.id == $stateParams.id) {
+		//		$scope.message = val;
+		//	}
+		//});
+
+		$scope.onItemDelete = function (item) {
+			Messages.remove(item);
+			$state.go('queue.messages');
+				//.messages.splice($scope.allMessages.messages.indexOf(item), 1);
+		};
+		//$ionicModal.fromTemplateUrl('templates/message.html', {
+		//	scope: $scope,
+		//	animation: 'slide-in-up'
+		//}).then(function(modal) {
+		//	$scope.modal = modal;
+		//});
+		//$scope.openModal = function() {
+		//	$scope.modal.show();
+		//};
+		//$scope.closeModal = function() {
+		//	$scope.modal.hide();
+		//};
+		////Cleanup the modal when we're done with it!
+		//$scope.$on('$destroy', function() {
+		//	$scope.modal.remove();
+		//});
+		//// Execute action on hide modal
+		//$scope.$on('modal.hidden', function() {
+		//	// Execute action
+		//});
+		//// Execute action on remove modal
+		//$scope.$on('modal.removed', function() {
+		//	// Execute action
+		//});
+		//$scope.lonConfig = {};
+		//$scope.lonConfig.isEnabled = localStorageService.get('lonConfig.isEnabled') === 'true' ? true : false;
+		//$scope.allMessages = Messages.messages();
+		//
+		//$scope.toContacts = function() {
+		//	$state.go('contacts');
+		//};
+		//
+		//$scope.edit = function(item) {
+		//	//alert('Edit Item: ' + item.id);
+		//	$state.go('edit');
+		//};
+
+
+		$ionicPlatform.ready(function () {
+
+			$scope.send = function () {
+
+				//CONFIGURATION
+				var options = {
+					replaceLineBreaks: false, // true to replace \n by a new line, false by default
+					android: {
+						intent: ''  // send SMS with the native android SMS messaging
+						//intent: '' // send SMS without open any other app
+					}
+				};
+
+				var success = function () {
+					alert('Message sent successfully');
+				};
+				var error = function (e) {
+					alert('Message Failed:' + e);
+				};
+				var _u = [];
+				sms.send($scope.message.contactPhone,
+					$scope.message.text, options, success, error);
+
+				window.plugin.notification.local.add({
+					autoCancel: true,
+					message: 'Messages sent to : ' + _u.join(', ')
+				});
+
+			};
+		});
+	})
+
+	.controller('ContactsCtrl', function ($scope, $ionicLoading, localStorageService) {
 
 		$ionicLoading.show({
 			template: 'Loading Contacts...'
@@ -202,7 +263,7 @@ angular.module('LovedOneNotifier.controllers', [])
 
 		function onSuccess(contacts) {
 
-			var _contacts = contacts.filter(function(c) {
+			var _contacts = contacts.filter(function (c) {
 				return (c.displayName && c.phoneNumbers);
 			});
 
@@ -234,7 +295,7 @@ angular.module('LovedOneNotifier.controllers', [])
 		// get the contacts
 		navigator.contacts.find(fields, onSuccess, onError, options);
 
-		$scope.handleContact = function(c) {
+		$scope.handleContact = function (c) {
 			var savedContacts = localStorageService.get('lonConfig.savedContacts');
 			savedContacts = savedContacts ? savedContacts : [];
 
@@ -251,7 +312,7 @@ angular.module('LovedOneNotifier.controllers', [])
 
 			} else {
 				// remove from localStorage
-				savedContacts.forEach(function(k, v) {
+				savedContacts.forEach(function (k, v) {
 					if (k.id === c.id) {
 						savedContacts.splice(v, 1);
 					}

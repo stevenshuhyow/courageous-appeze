@@ -2,7 +2,7 @@
 // Ionic Starter App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
-angular.module('LovedOneNotifier', ['ionic', 'config', 'LocalStorageModule', 'LovedOneNotifier.controllers', 'LovedOneNotifier.services'])
+angular.module('antiSocialite', ['ionic', 'config', 'LocalStorageModule', 'antiSocialite.controllers', 'antiSocialite.services'])
 
 	.run(function($ionicPlatform, $rootScope, localStorageService, $location, $timeout) {
 		$ionicPlatform.ready(function() {
@@ -19,7 +19,7 @@ angular.module('LovedOneNotifier', ['ionic', 'config', 'LocalStorageModule', 'Lo
 					// service started
 				},
 				function(e) {
-					//alert('Error: ' + e.ErrorMessage);
+					alert('Error: ' + e.ErrorMessage);
 				});
 
 			var skipIntro;
@@ -39,9 +39,12 @@ angular.module('LovedOneNotifier', ['ionic', 'config', 'LocalStorageModule', 'Lo
 					if (fromState.name === 'home' && toState.name === 'loading') {
 						navigator.app.exitApp();
 					}
+					if (fromState.name === 'queue' && toState.name === 'loading') {
+						navigator.app.exitApp();
+					}
 					if (toState.name === 'intro') {
 						if (skipIntro) {
-							location.href = '#/home';
+							location.href = '#/queue/messages';
 						}
 					}
 				});
@@ -51,11 +54,11 @@ angular.module('LovedOneNotifier', ['ionic', 'config', 'LocalStorageModule', 'Lo
 			if ($location.$$url === '/loading') {
 				$timeout(function() {
 					if (skipIntro) {
-						location.href = '#/home';
+						location.href = '#/queue/messages';
 					} else {
 						location.href = '#/intro';
 					}
-				}, 2000);
+				}, 500);
 			}
 
 
@@ -80,6 +83,22 @@ angular.module('LovedOneNotifier', ['ionic', 'config', 'LocalStorageModule', 'Lo
 				url: '/home',
 				templateUrl: 'templates/home.html',
 				controller: 'HomeCtrl'
+			})
+
+			.state('queue', {
+				url: '/queue',
+				templateUrl: 'templates/queue.html',
+				abstract: true
+			})
+			.state('queue.messages', {
+				url: '',
+				templateUrl: 'templates/messages.html',
+				controller: 'QueueCtrl'
+			})
+			.state('queue.message', {
+				url: '/messages/:id',
+				templateUrl: 'templates/message.html',
+				controller: 'MessageCtrl'
 			})
 
 			.state('contacts', {
