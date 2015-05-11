@@ -1,59 +1,59 @@
 'use strict';
 angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 
-	.factory('Auth', function ($http, $location, $window, $state, $q, localStorageService) {
-		// Don't touch this Auth service!!!
-		// it is responsible for authenticating our user
-		// by exchanging the user's username and password
-		// for a JWT from the server
-		// that JWT is then stored in localStorage as 'com.shortly'
-		// after you signin/signup open devtools, click resources,
-		// then localStorage and you'll see your token from the server
-		var signin = function (user) {
-			return $http({
-				method: 'POST',
-				url: '/api/users/signin',
-				data: user
-			})
-				.then(function (resp) {
-					$http.defaults.headers.common['x-access-token'] = resp.data.token;
-				});
-		};
-
-		var signup = function (user) {
-			return $http({
-				method: 'POST',
-				url: '/api/users/signup',
-				data: user
-			})
-				.then(function (resp) {
-					return resp.data.token;
-				});
-		};
-
-		var isAuth = function () {
-			console.log(localStorageService.getItem('courageousTrapeze'));
-			return !!localStorageService.getItem('courageousTrapeze');
-		};
-
-		var signout = function () {
-			localStorageService.removeItem('courageousTrapeze');
-			delete $http.defaults.headers.common['x-access-token'];
-			$location.path('/signin');
-		};
-
-
-		return {
-			//userId: null,
-			signin: signin,
-			signup: signup,
-			isAuth: isAuth,
-			signout: signout
-
-		};
-
-
-	})
+	//.factory('Auth', function ($http, $location, $window, $state, $q, localStorageService) {
+	//	// Don't touch this Auth service!!!
+	//	// it is responsible for authenticating our user
+	//	// by exchanging the user's username and password
+	//	// for a JWT from the server
+	//	// that JWT is then stored in localStorage as 'com.shortly'
+	//	// after you signin/signup open devtools, click resources,
+	//	// then localStorage and you'll see your token from the server
+	//	var signin = function (user) {
+	//		return $http({
+	//			method: 'POST',
+	//			url: '/api/users/signin',
+	//			data: user
+	//		})
+	//			.then(function (resp) {
+	//				$http.defaults.headers.common['x-access-token'] = resp.data.token;
+	//			});
+	//	};
+	//
+	//	var signup = function (user) {
+	//		return $http({
+	//			method: 'POST',
+	//			url: '/api/users/signup',
+	//			data: user
+	//		})
+	//			.then(function (resp) {
+	//				return resp.data.token;
+	//			});
+	//	};
+	//
+	//	var isAuth = function () {
+	//		console.log(localStorageService.getItem('courageousTrapeze'));
+	//		return !!localStorageService.getItem('courageousTrapeze');
+	//	};
+	//
+	//	var signout = function () {
+	//		localStorageService.removeItem('courageousTrapeze');
+	//		delete $http.defaults.headers.common['x-access-token'];
+	//		$location.path('/signin');
+	//	};
+	//
+	//
+	//	return {
+	//		//userId: null,
+	//		signin: signin,
+	//		signup: signup,
+	//		isAuth: isAuth,
+	//		signout: signout
+	//
+	//	};
+	//
+	//
+	//})
 //.factory('AuthFactory', function ($http, $state, $q) {
 //		var factory = {
 //			userId: null,
@@ -171,7 +171,7 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 				url: 'http://courageoustrapeze.azurewebsites.net/api/messages'
 			})
 				.then(function(response) {
-					console.log(response.data);
+					alert(JSON.stringify(response.data));
 					return response.data;
 				});
 		};

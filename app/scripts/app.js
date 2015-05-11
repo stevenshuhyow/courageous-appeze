@@ -4,13 +4,14 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 angular.module('antiSocialite',
 	['ionic',
+	'ui.router',
 	'config',
  	'LocalStorageModule',
 	'antiSocialite.controllers',
 	'antiSocialite.services'])
 
 
-	.config(function($stateProvider, $urlRouterProvider, localStorageServiceProvider) {
+	.config(['$stateProvider', '$urlRouterProvider', 'localStorageServiceProvider', function($stateProvider, $urlRouterProvider, localStorageServiceProvider) {
 		//var authenticated = ['$q', 'AuthFactory', function ($q, AuthFactory) {
 		//	var deferred = $q.defer();
 		//	AuthFactory.isLoggedIn(true)
@@ -37,7 +38,7 @@ angular.module('antiSocialite',
 				controller: 'IntroCtrl'
 			})
 			.state('login', {
-				templateUrl: '/templates/login.html',
+				templateUrl: 'templates/login.html',
 				url: '/login',
 				controller: 'LoginCtrl'
 			})
@@ -50,7 +51,7 @@ angular.module('antiSocialite',
 			.state('queue', {
 				url: '/queue',
 				templateUrl: 'templates/queue.html',
-				abstract: true,
+				abstract: true
 				//data:{
 				//	requireLogin: true
 				//}
@@ -61,7 +62,7 @@ angular.module('antiSocialite',
 			.state('queue.messages', {
 				url: '',
 				templateUrl: 'templates/messages.html',
-				controller: 'QueueCtrl',
+				controller: 'QueueCtrl'
 				//resolve: {
 				//	authenticated: authenticated
 				//}
@@ -86,9 +87,9 @@ angular.module('antiSocialite',
 			.setPrefix('lon');
 
 
-	})
+	}])
 
-	.run(function($ionicPlatform, $rootScope, localStorageService, $location, $timeout, $state) {
+	.run(['$ionicPlatform', '$rootScope', 'localStorageService', '$location', '$timeout', '$state', function($ionicPlatform, $rootScope, localStorageService, $location, $timeout, $state) {
 		//var authenticated = ['$q', 'Auth', function ($q, Auth) {
 		//	var deferred = $q.defer();
 		//	Auth.isLoggedIn(false)
@@ -104,21 +105,10 @@ angular.module('antiSocialite',
 
 
 
-		//$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState) {
-		//
-		//	//console.log(localStorage.getItem("courageousTrapeze") );
-		//	//console.log(localStorageService.get("courageousTrapeze") );
-		//	if (!localStorageService.get("courageousTrapeze")) {
-		//		$state.go('login');
-		//		//alert(1)
-		//	}
-		//
-		//
-		//});
+
 
 		//console.log("in .run");
 		$ionicPlatform.ready(function() {
-		console.log("in ionic platform ready");
 				if (window.cordova && window.cordova.plugins.Keyboard) {
 				cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 			}
@@ -137,10 +127,25 @@ angular.module('antiSocialite',
 
 			var skipIntro;
 
+			$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState) {
+				//alert(localStorageService);
+				//console.log(localStorage.getItem("courageousTrapeze") );
+				//console.log(localStorageService.get("courageousTrapeze") );
+				//alert('in state change success');
+				if (localStorageService && !localStorageService.get("courageousTrapeze")) {
+					//$state.go('login');
+					//alert("inside token check");
+					//location.href = '#/login';
+					$state.go('login');
+					//$location.path('/login');
+				}
 
+
+			});
 
 			$rootScope.$on('$stateChangeStart',
 				function(event, toState, toParams, fromState) {
+					//alert('in state change start');
 					//if (next.$$route && next.$$route.authenticate && !Auth.isAuth()) {
 					//	$location.path('/');
 					//}
@@ -193,18 +198,26 @@ angular.module('antiSocialite',
 					}
 				});
 
-			skipIntro = localStorageService.get('skip') === 'true' ? true : false;
+			if(localStorageService){
 
-			if ($location.$$url === '/loading') {
-				$timeout(function() {
-					if (skipIntro) {
-						location.href = '#/queue/messages';
-					} else {
-						location.href = '#/intro';
-					}
-				}, 1000);
+			skipIntro = localStorageService.get('skip') === 'true' ? true : false;
+			var token = localStorageService.get('courageousTrapeze');
+				if ($location.$$url === '/loading') {
+					$timeout(function() {
+						if (skipIntro) {
+							location.href = '#/queue/messages';
+						} else {
+							if(token){
+								location.href = '#/login';
+							}else{
+								location.href = '#/intro';
+
+							}
+						}
+					}, 1000);
+				}
 			}
 
 		});
 
-	});
+	}]);

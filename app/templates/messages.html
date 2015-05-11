@@ -15,7 +15,7 @@
         <ion-list ng-show="lonConfig.isEnabled"
                   show-delete="shouldShowDelete"
                   can-swipe="listCanSwipe">
-            <ion-item ng-repeat="message in allMessages.messages"
+            <ion-item ng-repeat="message in allMessages"
                       class="item-avatar item-remove-animate"
                       ng-click="edit(message)">
                 <!--ui-sref="queue.message({id: message.id})">-->
@@ -23,7 +23,7 @@
 
                 <img ng-src="">
 
-                <h2>{{message.contactPhone}}</h2>
+                <h2>{{message.contactId.name}} : {{message.contactId.phone}}</h2>
 
                 <p>{{message.text}}</p>
                 <ion-option-button class="button-positive"
@@ -37,6 +37,6 @@
         </ion-list>
     </ion-content>
     <ion-footer-bar class="bar-assertive">
-        <h5 class="center-footer">Made @ HackReactor</h5>
+        <h5 class="center-footer">antiSocialite made @ HackReactor</h5>
     </ion-footer-bar>
 </ion-view>
