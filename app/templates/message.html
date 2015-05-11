@@ -1,19 +1,19 @@
 
-<ion-view hide-back-button="false" title="antiSocialite">
+<ion-view hide-back-button="false" title="Edit Message">
 
     <ion-content padding="true">
         <form class="list" ng-submit="update()">
             <label class="item item-input">
-                <input type="text" placeholder="Contact Name" ng-model="message.name">
+                <input type="text" placeholder="Contact Name" ng-model="message.contactId.name">
             </label>
             <label class="item item-input">
-                <input type="text" placeholder="" ng-model="message.contactPhone">
+                <input type="text" placeholder="" ng-model="message.contactId.phone">
             </label>
             <label class="item item-input">
                 <textarea placeholder="Content" ng-model="message.text"></textarea>
             </label>
             <label class="item item-input">
-                <input type="date" ng-model="message.date" >
+                <input type="date" ng-model="message.date | date: 'yyyy-MM-ddTHH:mm:ss'" >
             </label>
             <button value="send" ng-click="send()" class="button button-full button-assertive">Send</button>
             <!--<button value="save" type="submit" class="button button-full button-stable">Save</button>-->
@@ -21,7 +21,7 @@
         </form>
     </ion-content>
     <ion-footer-bar class="bar-assertive">
-        <h5 class="center-footer">Made @ HackReactor</h5>
+        <h5 class="center-footer">antiSocialite made @ HackReactor</h5>
     </ion-footer-bar>
 </ion-view>
 
