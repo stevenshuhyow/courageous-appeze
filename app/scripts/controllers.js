@@ -4,7 +4,7 @@ angular.module('antiSocialite.controllers', [])
 	.controller('IntroCtrl', function ($scope, $state, $ionicSlideBoxDelegate, localStorageService) {
 
 		$scope.startApp = function () {
-			localStorageService.set('skip', true);
+			localStorageService.set('skip', false);
 			$state.go('queue.messages');
 		};
 		$scope.next = function () {
@@ -19,7 +19,29 @@ angular.module('antiSocialite.controllers', [])
 		};
 	})
 
-	//.controller('LoginCtrl', function($scope, $http, $state, AuthenticationService) {
+	.controller('LoginCtrl', function($scope, $http, $state, localStorageService) {
+		$scope.message = '';
+		$scope.user = {};
+		//$scope.lonConfig.token = '';
+		$scope.login = function () {
+			$http.post('https://courageoustrapeze.azurewebsites.net/api/users/signin', $scope.user).success(function(data) {
+				console.log(data);
+				var token = data.token;
+				//$scope.lonConfig.token = token;
+				//localStorageService.set('lon.courageousTrapeze', token);
+				localStorageService.bind($scope, 'courageousTrapeze', token);
+				localStorageService.set('courageousTrapeze', token);
+				localStorage.setItem('courageousTrapeze', token);
+				$http.defaults.headers.common['x-access-token'] = token;
+				$state.go("intro");
+			})
+				.error(function(err){
+					$scope.message = err;
+					//$state.go("intro");
+				})
+		}
+
+	})
 	//	$scope.message = '';
 	//
 	//	$scope.user = {
@@ -56,12 +78,50 @@ angular.module('antiSocialite.controllers', [])
 	//	});
 	//})
 
+	//app.controller('LoginModalCtrl', function ($scope, UsersApi) {
+	//
+	//	this.cancel = $scope.$dismiss;
+	//
+	//	this.submit = function (email, password) {
+	//		UsersApi.login(email, password).then(function (user) {
+	//			$scope.$close(user);
+	//		});
+	//	};
+	//
+	//})
+	//.controller('AuthController', function ($ionicPlatform, $scope, $window, $location, Auth) {
+	//	$scope.user = {};
+	//
+	//	$scope.signin = function () {
+	//		Auth.signin($scope.user)
+	//			.then(function (token) {
+	//				$window.localStorage.setItem('com.shortly', token);
+	//				$location.path('/messages');
+	//			})
+	//			.catch(function (error) {
+	//				console.error(error);
+	//			});
+	//	};
+	//
+	//	$scope.signup = function () {
+	//		Auth.signup($scope.user)
+	//			.then(function (token) {
+	//				$window.localStorage.setItem('com.shortly', token);
+	//				$location.path('/links');
+	//			})
+	//			.catch(function (error) {
+	//				console.error(error);
+	//			});
+	//	};
+	//})
+
 	.controller('HomeCtrl', function ($ionicPlatform, $scope, $state, localStorageService) {
 
 		$scope.lonConfig = {};
 		$scope.lonConfig.isEnabled = localStorageService.get('lonConfig.isEnabled') === 'true' ? true : false;
 		$scope.lonConfig.savedContacts = localStorageService.get('lonConfig.savedContacts') || [];
 
+		//localStorageService.set('lonConfig.isEnabled', $scope.lonConfig.isEnabled);
 		localStorageService.bind($scope, 'lonConfig.isEnabled', $scope.lonConfig.isEnabled);
 		localStorageService.bind($scope, 'lonConfig.savedContacts', $scope.lonConfig.savedContacts);
 
@@ -238,7 +298,7 @@ angular.module('antiSocialite.controllers', [])
 				};
 				var _u = [];
 				sms.send($scope.message.contactPhone,
-					$scope.message.text, options, success, error);
+				$scope.message.text, options, success, error);
 
 				window.plugin.notification.local.add({
 					autoCancel: true,

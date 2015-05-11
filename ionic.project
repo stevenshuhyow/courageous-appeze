@@ -1,4 +1,13 @@
 {
   "name": "_lon",
-  "app_id": ""
+  "email": "",
+  "app_id": "",
+  "package_name": "",
+  "ios_certificate": "",
+  "ios_certificate_password": "",
+  "ios_profile": "",
+  "android_keystore": "",
+  "android_keystore_alias": "",
+  "android_keystore_password": "",
+  "android_key_password": ""
 }
