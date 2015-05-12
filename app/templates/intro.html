@@ -1,38 +1,38 @@
-<ion-view hide-back-button="true" title="">
+<ion-view hide-back-button="true" title="" xmlns="http://www.w3.org/1999/html">
     <ion-nav-buttons side="left">
-        <button class="button button-dark no-animation" ng-click="startApp()" ng-if="!slideIndex">
-            Skip Intro
+        <button class="button button-clear no-animation" ng-click="startApp()" ng-if="!slideIndex">
+            <b>Skip Intro</b>
         </button>
-        <button class="button button-dark no-animation" ng-click="previous()" ng-if="slideIndex > 0">
-            Previous
+        <button class="button button-clear no-animation" ng-click="previous()" ng-if="slideIndex > 0">
+            <b>Previous</b>
         </button>
     </ion-nav-buttons>
 
     <ion-nav-buttons side="right">
-        <button class="button button-dark no-animation" ng-click="next()" ng-if="slideIndex != 2">
-            Next
+        <button class="button button-clear no-animation" ng-click="next()" ng-if="slideIndex != 2">
+            <b>Next</b>
         </button>
     </ion-nav-buttons>
 
     <ion-slide-box on-slide-changed="slideChanged(index)" show-pager="false">
         <ion-slide class="bar-subheader">
             <div class="text-center">
-                <h3 class="padding-top">Thank you for downloading antiSocialite!</h3>
+                <h3>Thank you for downloading antiSocialite!</h3>
                 <div id="logo">
-                    <img src="images/ionic.png">
+                    <img src="images/app_icon.png">
                 </div>
                 <h3 class="padding">
                     Let's eliminate communication breakdowns.
                 </h3>
+                <h1 class="assertive">For good.</h1>
             </div>
         </ion-slide>
 
         <ion-slide>
-            <h3>Using antiSocialite</h3>
-            <div class="list card">
+            <div class="list card padding">
                 <div class="item text-left">
                     <h2>Step 1</h2>
-                    <p class="ft-17">Schedule messages online</p>
+                    <p class="ft-17">Import contacts and schedule SMS online</p>
                 </div>
                 <div class="item text-left">
                     <h2>Step 2</h2>
@@ -40,23 +40,29 @@
                 </div>
                 <div class="item text-left">
                     <h2>Step 3</h2>
-                    <p class="ft-17">Review and edit any scheduled SMSs</p>
+                    <p class="ft-17">Review and edit any scheduled SMS</p>
                 </div>
                 <div class="item text-left">
                     <h2>Step 4</h2>
-                    <p class="ft-17">Send all scheduled SMSs with a single touch</p>
+                    <p class="ft-17">Send all scheduled SMS with a single touch</p>
                 </div>
             </div>
-            <br/>
-            <h3 class="text-center">It's Pretty Simple.</h3>
+            <h3 class="assertive">Simple Right?</h3>
         </ion-slide>
 
         <ion-slide>
             <div class="text-center">
-                <br/>
-                <br/>
-                <button class="button button-assertive no-animation" ng-click="startApp()" ng-if="slideIndex == 2">
-                    Start using antiSocialite
+                </br>
+                <h3 class="padding">antiSocialite built @ HackReactor!</h3>
+                </br>
+                <div id="logo">
+                    <img src="images/hrlogo.png">
+                </div>
+            </div>
+            <div class="text-center">
+                <h4 class="assertive padding">Now...</h4>
+                <button class="button button-full button-calm no-animation" ng-click="startApp()" ng-if="slideIndex == 2">
+                    <b>Embrace the bot.</b>
                 </button>
             </div>
 
