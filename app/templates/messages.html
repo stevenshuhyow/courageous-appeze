@@ -9,7 +9,10 @@
         <button ng-click="config()" class="button button-icon icon ion-ios7-home"></button>
     </ion-nav-buttons>
     <ion-content padding="true">
-        <button class="button button-block button-stable" ng-click="sendAll()">
+        <!--<div class="padding" ng-show="allMessages.length > 0">-->
+            <!--<h3 class="padding"></h3>-->
+        <!--</div>-->
+        <button class="button button-block button-calm" ng-click="sendAll()" ng-show="allMessages">
             Send All
         </button>
         <ion-list ng-show="lonConfig.isEnabled"
@@ -37,6 +40,6 @@
         </ion-list>
     </ion-content>
     <ion-footer-bar class="bar-assertive">
-        <h5 class="center-footer">antiSocialite made @ HackReactor</h5>
+        <h5 class="center-footer"><b>antiSocialite</b> crafted @ HackReactor</h5>
     </ion-footer-bar>
 </ion-view>

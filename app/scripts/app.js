@@ -26,6 +26,8 @@ angular.module('antiSocialite',
 		//	return deferred.promise;
 		//}];
 
+		$urlRouterProvider.otherwise('/login');
+
 		$stateProvider
 			.state('loading', {
 				url: '/loading',
@@ -79,7 +81,6 @@ angular.module('antiSocialite',
 				controller: 'ContactsCtrl'
 			});
 
-		$urlRouterProvider.otherwise('/loading');
 
 
 

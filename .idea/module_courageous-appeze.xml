@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_courageous-appeze" default="compile.module.courageous-appeze">
+  <dirname property="module.courageous-appeze.basedir" file="${ant.file.module_courageous-appeze}"/>
+  
+  <property name="module.jdk.home.courageous-appeze" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.courageous-appeze" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.courageous-appeze" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.courageous-appeze" value="-encoding UTF-8 -source 1.3 ${compiler.args}"/>
+  
+  <property name="courageous-appeze.output.dir" value="undefined"/>
+  <property name="courageous-appeze.testoutput.dir" value="undefined"/>
+  
+  <path id="courageous-appeze.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="courageous-appeze.module.production.classpath">
+    <path refid="library.courageous-appeze_node_modules.classpath"/>
+  </path>
+  
+  <path id="courageous-appeze.runtime.production.module.classpath">
+    <path refid="library.courageous-appeze_node_modules.classpath"/>
+  </path>
+  
+  <path id="courageous-appeze.module.classpath">
+    <path refid="library.courageous-appeze_node_modules.classpath"/>
+  </path>
+  
+  <path id="courageous-appeze.runtime.module.classpath">
+    <path refid="library.courageous-appeze_node_modules.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.courageous-appeze">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.courageous-appeze">
+    <patternset refid="excluded.from.module.courageous-appeze"/>
+  </patternset>
+  
+  
+  <target name="compile.module.courageous-appeze" depends="compile.module.courageous-appeze.production,compile.module.courageous-appeze.tests" description="Compile module courageous-appeze"/>
+  
+  <target name="compile.module.courageous-appeze.production" depends="register.custom.compilers" description="Compile module courageous-appeze; production classes"/>
+  
+  <target name="compile.module.courageous-appeze.tests" depends="register.custom.compilers,compile.module.courageous-appeze.production" description="compile module courageous-appeze; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.courageous-appeze" description="cleanup module">
+    <delete dir="${courageous-appeze.output.dir}"/>
+    <delete dir="${courageous-appeze.testoutput.dir}"/>
+  </target>
+</project>
