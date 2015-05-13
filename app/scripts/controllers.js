@@ -33,7 +33,7 @@ angular.module('antiSocialite.controllers', [])
 		$scope.user = {};
 		//$scope.lonConfig.token = '';
 		$scope.login = function () {
-			$http.post('https://courageoustrapeze.azurewebsites.net/api/users/signin', $scope.user).success(function(data) {
+			$http.post('https://14e87f56.ngrok.io', $scope.user).success(function(data) {
 				//alert("inside Login Ctrl" + data);
 				var token = data.token;
 				//$scope.lonConfig.token = token;
@@ -147,7 +147,7 @@ angular.module('antiSocialite.controllers', [])
 		var getMessage = function () {
 			return $http({
 				method: 'GET',
-				url: 'http://courageoustrapeze.azurewebsites.net/api/messages'
+				url: 'https://14e87f56.ngrok.io/api/messages'
 			})
 				.then(function(response) {
 					//alert(JSON.stringify(response.data));
@@ -159,7 +159,7 @@ angular.module('antiSocialite.controllers', [])
 		var updateMessage = function(message){
 			$http({
 				method: 'POST',
-				url: 'http://courageoustrapeze.azurewebsites.net/api/messages',
+				url: 'https://14e87f56.ngrok.io/api/messages',
 				data: message
 			});
 		};
@@ -168,7 +168,7 @@ angular.module('antiSocialite.controllers', [])
 			//data.messages.splice(data.messages.indexOf(message),1);
 			$http({
 				method: 'DELETE',
-				url: 'http://courageoustrapeze.azurewebsites.net/api/messages',
+				url: 'https://14e87f56.ngrok.io/api/messages',
 				data: message.id
 			});
 		};
