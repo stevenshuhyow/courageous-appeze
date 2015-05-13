@@ -33,7 +33,7 @@ angular.module('antiSocialite.controllers', [])
 		$scope.user = {};
 		//$scope.lonConfig.token = '';
 		$scope.login = function () {
-			$http.post('https://14e87f56.ngrok.io', $scope.user).success(function(data) {
+			$http.post('https://14e87f56.ngrok.io/api/users/signin', $scope.user).success(function(data) {
 				//alert("inside Login Ctrl" + data);
 				var token = data.token;
 				//$scope.lonConfig.token = token;
@@ -168,7 +168,7 @@ angular.module('antiSocialite.controllers', [])
 			//data.messages.splice(data.messages.indexOf(message),1);
 			$http({
 				method: 'DELETE',
-				url: 'https://14e87f56.ngrok.io/api/messages',
+				url: 'http://courageoustrapeze.azurewebsites.net/api/messages',
 				data: message.id
 			});
 		};
