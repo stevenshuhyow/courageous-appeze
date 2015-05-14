@@ -34,7 +34,14 @@ angular.module('antiSocialite.controllers', [])
 		$scope.signup = function (user) {
     	$http.post("http://localhost:3000/api/users/signup", $scope.user)
     	.success(function(data){
-    		$state.go("list")
+				//alert("inside Login Ctrl" + data);
+				var token = data.token;
+				//$scope.lonConfig.token = token;
+				//localStorageService.set('lon.courageousTrapeze', token);
+				localStorageService.bind($scope, 'courageousTrapeze', token);
+				localStorageService.set('courageousTrapeze', token);
+				$http.defaults.headers.common['x-access-token'] = token;
+				$state.go("list");
     	})
     	.error(function(err){
     		$scoope.message = err;
@@ -86,6 +93,7 @@ angular.module('antiSocialite.controllers', [])
 			$state.go('queue.messages');
 		}
 		$scope.logout = function(){
+			localStorageService.remove('courageousTrapeze');
 			$state.go('login');
 		}
 	})
