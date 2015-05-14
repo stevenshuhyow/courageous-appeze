@@ -75,7 +75,7 @@ angular.module('antiSocialite',
 				//	authenticated: authenticated
 				//}
 			})
-			.state('queue.message', {
+			.state('addMessage', {
 				url: '/messages/:id',
 				templateUrl: 'templates/message.html',
 				controller: 'MessageCtrl'

@@ -1,23 +1,22 @@
-
-<ion-view hide-back-button="false" title="Edit Message">
-
+<ion-view hide-back-button="false" title="Create Message" class="splash">
     <ion-content padding="true">
-        <form class="list" ng-submit="update()">
+        <form class="list">
+            <div>
+                </br>
+            </div>
+            <label class="item item-input">
+                <input type="date" ng-model="message.date | date: 'yyyy-MM-ddTHH:mm:ss'" >
+            </label>
             <label class="item item-input">
                 <input type="text" placeholder="Contact Name" ng-model="message.contactId.name">
             </label>
             <label class="item item-input">
-                <input type="text" placeholder="" ng-model="message.contactId.phone">
+                <input type="text" placeholder="send to?" ng-model="message.contactId.phone">
             </label>
             <label class="item item-input">
-                <textarea placeholder="Content" ng-model="message.text"></textarea>
+                <textarea placeholder="Content" rows="8" ng-model="message.text"></textarea>
             </label>
-            <label class="item item-input">
-                <input type="date" ng-model="message.date | date: 'yyyy-MM-ddTHH:mm:ss'" >
-            </label>
-            <button value="send" ng-click="send()" class="button button-full button-positive">Send</button>
-            <!--<button value="save" type="submit" class="button button-full button-stable">Save</button>-->
-            <button value="delete" ng-click="onItemDelete(message)" class="button button-full button-dark">Delete</button>
+            <button class="button button-full button-calm" ng-click="send()">Store</button>
         </form>
     </ion-content>
     <ion-footer-bar class="bar-assertive">

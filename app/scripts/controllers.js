@@ -293,11 +293,11 @@ angular.module('antiSocialite.controllers', [])
 		//	}
 		//});
 
-		$scope.onItemDelete = function (item) {
-			Messages.remove(item);
-			$state.go('queue.messages');
-				//.messages.splice($scope.allMessages.messages.indexOf(item), 1);
-		};
+		// $scope.onItemDelete = function (item) {
+		// 	Messages.remove(item);
+		// 	$state.go('queue.messages');
+		// 		//.messages.splice($scope.allMessages.messages.indexOf(item), 1);
+		// };
 		//$ionicModal.fromTemplateUrl('templates/message.html', {
 		//	scope: $scope,
 		//	animation: 'slide-in-up'
@@ -377,9 +377,6 @@ angular.module('antiSocialite.controllers', [])
 				url: 'https://3653d81e.ngrok.io/api/contacts'
 			})
 			.then(function(response) {
-				console.log(response.data);
-				console.log("hi")
-				//alert(JSON.stringify(response.data));
 				return response.data;
 			});
   	};
