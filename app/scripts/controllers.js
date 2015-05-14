@@ -33,7 +33,8 @@ angular.module('antiSocialite.controllers', [])
 		$scope.user = {};
 		//$scope.lonConfig.token = '';
 		$scope.login = function () {
-			$http.post('https://courageoustrapeze.azurewebsites.net/api/users/signin', $scope.user).success(function(data) {
+			$http.post('https://3653d81e.ngrok.io/api/users/signin', $scope.user)
+			.success(function(data) {
 				//alert("inside Login Ctrl" + data);
 				var token = data.token;
 				//$scope.lonConfig.token = token;
@@ -41,7 +42,7 @@ angular.module('antiSocialite.controllers', [])
 				localStorageService.bind($scope, 'courageousTrapeze', token);
 				localStorageService.set('courageousTrapeze', token);
 				$http.defaults.headers.common['x-access-token'] = token;
-				$state.go("intro");
+				$state.go("list");
 			})
 				.error(function(err){
 					$scope.message = err;
@@ -49,6 +50,24 @@ angular.module('antiSocialite.controllers', [])
 				})
 		}
 
+	})
+
+	.controller('List', function($ionicPlatform, $scope, $http, $state, localStorageService) {
+
+		$scope.addMessage = function(){
+			$state.go('addMessage');
+		}
+
+		$scope.contacts = function(){
+			$state.go('contacts');
+		}
+
+		$scope.allMessages = function(){
+			$state.go('queue.messages');
+		}
+		$scope.logout = function(){
+			$state.go('login');
+		}
 	})
 	//	$scope.message = '';
 	//
@@ -147,7 +166,7 @@ angular.module('antiSocialite.controllers', [])
 		var getMessage = function () {
 			return $http({
 				method: 'GET',
-				url: 'http://courageoustrapeze.azurewebsites.net/api/messages'
+				url: 'https://3653d81e.ngrok.io/api/messages'
 			})
 				.then(function(response) {
 					//alert(JSON.stringify(response.data));
@@ -159,7 +178,7 @@ angular.module('antiSocialite.controllers', [])
 		var updateMessage = function(message){
 			$http({
 				method: 'POST',
-				url: 'http://courageoustrapeze.azurewebsites.net/api/messages',
+				url: 'https://3653d81e.ngrok.io/api/messages',
 				data: message
 			});
 		};
@@ -168,7 +187,7 @@ angular.module('antiSocialite.controllers', [])
 			//data.messages.splice(data.messages.indexOf(message),1);
 			$http({
 				method: 'DELETE',
-				url: 'http://courageoustrapeze.azurewebsites.net/api/messages',
+				url: 'https://3653d81e.ngrok.io/api/messages',
 				data: message.id
 			});
 		};
@@ -183,7 +202,7 @@ angular.module('antiSocialite.controllers', [])
 		$scope.allMessages = getMessage();
 
 		$scope.config = function () {
-			$state.go('home');
+			$state.go('List');
 		};
 
 		$scope.edit = function (item) {
@@ -349,80 +368,98 @@ angular.module('antiSocialite.controllers', [])
 		});
 	})
 
-	.controller('ContactsCtrl', function ($scope, $ionicLoading, localStorageService) {
+	.controller('ContactsCtrl', function ($scope, $ionicLoading, $http,localStorageService) {
 
-		$ionicLoading.show({
-			template: 'Loading Contacts...'
-		});
-
-		var options = new ContactFindOptions();
-		options.multiple = true;
-		options.desiredFields = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name, navigator.contacts.fieldType.phoneNumbers];
-
-		var fields = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
-
-		function onSuccess(contacts) {
-
-			var _contacts = contacts.filter(function (c) {
-				return (c.displayName && c.phoneNumbers);
+		var getAllContacts = function() {
+			console.log('im inside getAllContacts')
+			return $http({
+				method: 'GET',
+				url: 'https://3653d81e.ngrok.io/api/contacts'
+			})
+			.then(function(response) {
+				console.log(response.data);
+				console.log("hi")
+				//alert(JSON.stringify(response.data));
+				return response.data;
 			});
+  	};
 
-			var savedContacts = localStorageService.get('lonConfig.savedContacts');
-			savedContacts = savedContacts ? savedContacts : [];
 
-			for (var i = 0; i < _contacts.length; i++) {
-				innerLoop: for (var j = 0; j < savedContacts.length; j++) {
-					if (savedContacts[j].id === _contacts[i].id) {
-						_contacts[i].isChecked = true;
-						break innerLoop;
-					} else {
-						_contacts[i].isChecked = false;
-					}
-				}
-			}
+		// $ionicLoading.show({
+		// 	template: 'Loading Contacts...'
+		// });
 
-			$scope.contacts = _contacts;
+		// var options = new ContactFindOptions();
+		// options.multiple = true;
+		// options.desiredFields = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name, navigator.contacts.fieldType.phoneNumbers];
 
+		// var fields = [navigator.contacts.fieldType.displayName, navigator.contacts.fieldType.name];
+
+		// function onSuccess(contacts) {
+
+		// 	var _contacts = contacts.filter(function (c) {
+		// 		return (c.displayName && c.phoneNumbers);
+		// 	});
+
+		// 	var savedContacts = localStorageService.get('lonConfig.savedContacts');
+		// 	savedContacts = savedContacts ? savedContacts : [];
+
+		// 	for (var i = 0; i < _contacts.length; i++) {
+		// 		innerLoop: for (var j = 0; j < savedContacts.length; j++) {
+		// 			if (savedContacts[j].id === _contacts[i].id) {
+		// 				_contacts[i].isChecked = true;
+		// 				break innerLoop;
+		// 			} else {
+		// 				_contacts[i].isChecked = false;
+		// 			}
+		// 		}
+		// 	}
+
+			// $scope.contacts = _contacts;
+			getAllContacts()
+			.then(function(results){
+				$scope.contacts = results;
+			})
 			$ionicLoading.hide();
-		}
+		})
 
-		function onError(contactError) {
-			$scope.error = contactError;
-			//alert('onError!');
-			$ionicLoading.hide();
-		}
+		// function onError(contactError) {
+		// 	$scope.error = contactError;
+		// 	//alert('onError!');
+		// 	$ionicLoading.hide();
+		// }
 
 		// get the contacts
-		navigator.contacts.find(fields, onSuccess, onError, options);
+		// navigator.contacts.find(fields, onSuccess, onError, options);
 
-		$scope.handleContact = function (c) {
-			var savedContacts = localStorageService.get('lonConfig.savedContacts');
-			savedContacts = savedContacts ? savedContacts : [];
+		// $scope.handleContact = function (c) {
+		// 	var savedContacts = localStorageService.get('lonConfig.savedContacts');
+		// 	savedContacts = savedContacts ? savedContacts : [];
 
-			if (c.isChecked) {
-				// add to localStorage
+		// 	if (c.isChecked) {
+		// 		// add to localStorage
 
-				savedContacts.push({
-					id: c.id,
-					name: c.displayName,
-					number: c.phoneNumbers[0].value
-				});
+		// 		savedContacts.push({
+		// 			id: c.id,
+		// 			name: c.displayName,
+		// 			number: c.phoneNumbers[0].value
+		// 		});
 
-				localStorageService.set('lonConfig.savedContacts', savedContacts);
+		// 		localStorageService.set('lonConfig.savedContacts', savedContacts);
 
-			} else {
-				// remove from localStorage
-				savedContacts.forEach(function (k, v) {
-					if (k.id === c.id) {
-						savedContacts.splice(v, 1);
-					}
-				});
+		// 	} else {
+		// 		// remove from localStorage
+		// 		savedContacts.forEach(function (k, v) {
+		// 			if (k.id === c.id) {
+		// 				savedContacts.splice(v, 1);
+		// 			}
+		// 		});
 
-				localStorageService.set('lonConfig.savedContacts', savedContacts);
-			}
+		// 		localStorageService.set('lonConfig.savedContacts', savedContacts);
+		// 	}
 
-			$scope.savedContacts = savedContacts;
-		};
+		// 	$scope.savedContacts = savedContacts;
+		// };
 
 
-	});
+	// });

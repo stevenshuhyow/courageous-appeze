@@ -26,10 +26,18 @@ angular.module('antiSocialite',
 		//	return deferred.promise;
 		//}];
 
+		$urlRouterProvider.otherwise('/login');
+
 		$stateProvider
 			.state('loading', {
 				url: '/loading',
 				templateUrl: 'templates/loading.html'
+			})
+
+			.state('list', {
+				url: '/list',
+				templateUrl: 'templates/list.html',
+				controller: 'List'
 			})
 
 			.state('intro', {
@@ -74,12 +82,11 @@ angular.module('antiSocialite',
 			})
 
 			.state('contacts', {
-				url: '/contacts',
 				templateUrl: 'templates/contacts.html',
+				url: '/contacts',
 				controller: 'ContactsCtrl'
 			});
 
-		$urlRouterProvider.otherwise('/loading');
 
 
 
