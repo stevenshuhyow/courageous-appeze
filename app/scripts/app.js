@@ -34,6 +34,12 @@ angular.module('antiSocialite',
 				templateUrl: 'templates/loading.html'
 			})
 
+			.state('list', {
+				url: '/list',
+				templateUrl: 'templates/list.html',
+				controller: 'List'
+			})
+
 			.state('intro', {
 				url: '/intro',
 				templateUrl: 'templates/intro.html',
@@ -76,8 +82,8 @@ angular.module('antiSocialite',
 			})
 
 			.state('contacts', {
-				url: '/contacts',
 				templateUrl: 'templates/contacts.html',
+				url: '/contacts',
 				controller: 'ContactsCtrl'
 			});
 
