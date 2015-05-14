@@ -1,34 +1,29 @@
-<ion-view hide-back-button="false">
+<ion-view hide-back-button="false" title="Messages">
     <ion-nav-buttons side="right">
         <button class="button button-icon icon ion-close-circled"
                 ng-click="shouldShowDelete = !shouldShowDelete">
         </button>
     </ion-nav-buttons>
     <ion-content padding="true">
-        <!--<div class="padding" ng-show="allMessages.length > 0">-->
-            <!--<h3 class="padding"></h3>-->
-        <!--</div>-->
         <button class="button button-block button-calm" ng-click="sendAll()" ng-show="allMessages">
             Send All
         </button>
-        <ion-list ng-show="lonConfig.isEnabled"
-                  show-delete="shouldShowDelete"
-                  can-swipe="listCanSwipe">
+        <ion-list show-delete="shouldShowDelete">
             <ion-item ng-repeat="message in allMessages"
                       class="item-avatar item-remove-animate"
                       ng-click="edit(message)">
                 <!--ui-sref="queue.message({id: message.id})">-->
                 <!--ng-href="#/queue/{{message.id}}">-->
 
-                <img ng-src="">
+<!--                 <img ng-src=""> -->
 
                 <h2>{{message.contactId.name}} : {{message.contactId.phone}}</h2>
 
                 <p>{{message.text}}</p>
-                <ion-option-button class="button-positive"
+<!--                 <ion-option-button class="button-positive"
                                    ng-click="edit(message)">
                     Edit
-                </ion-option-button>
+                </ion-option-button> -->
                 <ion-delete-button class="ion-minus-circled"
                                    ng-click="onItemDelete(message)">
                 </ion-delete-button>

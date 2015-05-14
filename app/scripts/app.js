@@ -61,7 +61,7 @@ angular.module('antiSocialite',
 				templateUrl: 'templates/queue.html',
 				abstract: true
 				//data:{
-				//	requireLogin: true
+				//	requireLogin: t`rue
 				//}
 				//resolve: {
 				//	authenticated: authenticated
@@ -75,16 +75,19 @@ angular.module('antiSocialite',
 				//	authenticated: authenticated
 				//}
 			})
-			.state('queue.message', {
+			.state('addMessage', {
 				url: '/messages/:id',
 				templateUrl: 'templates/message.html',
 				controller: 'MessageCtrl'
 			})
-
 			.state('contacts', {
 				templateUrl: 'templates/contacts.html',
 				url: '/contacts',
 				controller: 'ContactsCtrl'
+			})
+			.state('signup', {
+				templateUrl: 'templates/signup.html',
+				controller: 'Signup'
 			});
 
 
