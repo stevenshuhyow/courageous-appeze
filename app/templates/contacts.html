@@ -1,16 +1,26 @@
 <ion-view hide-back-button="false" title="Contacts">
+    <ion-nav-buttons side="right">
+        <button class="button button-icon icon ion-close-circled"
+                ng-click="shouldShowDelete = !shouldShowDelete">
+        </button>
+    </ion-nav-buttons>
     <ion-content padding="true">
         <div class="list">
             <label class="item item-input">
                 <i class="icon ion-search placeholder-icon"></i>
                 <input type="text" ng-model="searchC" placeholder="Search Contacts...">
             </label>
-            <ul class="list">
-                <li class="item item-checkbox" ng-repeat="userStorage in contacts | orderBy: 'name' | filter:searchContacts">
+
+            <ion-list show-delete="shouldShowDelete">
+                <ion-item class="item item-checkbox"
+                ng-repeat="userStorage in contacts | orderBy: 'name' | filter:searchContacts" ng-click="edit(contact)">
                     <h2>{{userStorage.name}}</h2>
                     <p>{{userStorage.phone}}</p>
-                </li>
-            </ul>
+                    <ion-delete-button class="ion-minus-circled"
+                   ng-click="onItemDelete(message)">
+                    </ion-delete-button>
+                </ion-item>
+            </ion-list>
         </div>
     </ion-content>
     <ion-footer-bar class="bar-assertive">

@@ -2,7 +2,7 @@
 angular.module('antiSocialite.controllers', [])
 
 	.controller('IntroCtrl', function ($scope, $state, $ionicSlideBoxDelegate, localStorageService) {
-
+//
 		$scope.startApp = function () {
 			//if (localStorageService && !localStorageService.get("courageousTrapeze")) {
 			//	//$state.go('login');
@@ -27,13 +27,29 @@ angular.module('antiSocialite.controllers', [])
 		};
 	})
 
+	.controller('Signup', function($ionicPlatform, $scope, $http, $state, localStorageService) {
+
+		$scope.user= {};
+
+		$scope.signup = function (user) {
+    	$http.post("http://localhost:3000/api/users/signup", $scope.user)
+    	.success(function(data){
+    		$state.go("list")
+    	})
+    	.error(function(err){
+    		$scoope.message = err;
+    	})
+  	};
+
+	})
+
 	.controller('LoginCtrl', function($ionicPlatform, $scope, $http, $state, localStorageService) {
 		//alert('inside Login ctrl');
 		$scope.message = '';
 		$scope.user = {};
 		//$scope.lonConfig.token = '';
 		$scope.login = function () {
-			$http.post('https://3653d81e.ngrok.io/api/users/signin', $scope.user)
+			$http.post('http://localhost:3000/api/users/signin', $scope.user)
 			.success(function(data) {
 				//alert("inside Login Ctrl" + data);
 				var token = data.token;
@@ -48,6 +64,10 @@ angular.module('antiSocialite.controllers', [])
 					$scope.message = err;
 					//$state.go("intro");
 				})
+		}
+
+		$scope.signup = function(){
+			$state.go('signup')
 		}
 
 	})
@@ -166,7 +186,7 @@ angular.module('antiSocialite.controllers', [])
 		var getMessage = function () {
 			return $http({
 				method: 'GET',
-				url: 'https://3653d81e.ngrok.io/api/messages'
+				url: 'http://localhost:3000/api/messages'
 			})
 				.then(function(response) {
 					//alert(JSON.stringify(response.data));
@@ -175,44 +195,44 @@ angular.module('antiSocialite.controllers', [])
 				});
 		};
 
-		var updateMessage = function(message){
-			$http({
-				method: 'POST',
-				url: 'https://3653d81e.ngrok.io/api/messages',
-				data: message
-			});
-		};
+		// var updateMessage = function(message){
+		// 	$http({
+		// 		method: 'POST',
+		// 		url: 'https://localhost:3000/api/messages',
+		// 		data: message
+		// 	});
+		// };
 
-		var deleteMessage = function(message){
-			//data.messages.splice(data.messages.indexOf(message),1);
-			$http({
-				method: 'DELETE',
-				url: 'https://3653d81e.ngrok.io/api/messages',
-				data: message.id
-			});
-		};
+		// var deleteMessage = function(message){
+		// 	//data.messages.splice(data.messages.indexOf(message),1);
+		// 	$http({
+		// 		method: 'DELETE',
+		// 		url: 'https://localhost:3000o/api/messages',
+		// 		data: message.id
+		// 	});
+		// };
 
 
 
-		$scope.shouldShowDelete = false;
-		//$scope.listCanEdit = true;
-		$scope.listCanSwipe = true;
-		$scope.lonConfig = {};
-		$scope.lonConfig.isEnabled = localStorageService.get('lonConfig.isEnabled') === 'true' ? true : false;
+		// $scope.shouldShowDelete = false;
+		// //$scope.listCanEdit = true;
+		// $scope.listCanSwipe = true;
+		// $scope.lonConfig = {};
+		// $scope.lonConfig.isEnabled = localStorageService.get('lonConfig.isEnabled') === 'true' ? true : false;
 		$scope.allMessages = getMessage();
 
-		$scope.config = function () {
-			$state.go('List');
-		};
+		// $scope.config = function () {
+		// 	$state.go('List');
+		// };
 
-		$scope.edit = function (item) {
-			$state.go('queue.message', {id: item.id});
-		};
+		// $scope.edit = function (item) {
+		// 	$state.go('queue.message', {id: item.id});
+		// };
 
 
-		$scope.onItemDelete = function (item) {
-			$scope.allMessages.messages.splice($scope.allMessages.messages.indexOf(item), 1);
-		};
+		// $scope.onItemDelete = function (item) {
+		// 	$scope.allMessages.messages.splice($scope.allMessages.messages.indexOf(item), 1);
+		// };
 
 
 		//$ionicModal.fromTemplateUrl('templates/message.html', {
@@ -260,32 +280,57 @@ angular.module('antiSocialite.controllers', [])
 				var error = function (e) {
 					alert('Message Failed:' + e);
 				};
-				var _u = [];
+				// var _u = [];
 
-				for (var i = 0; i < $scope.allMessages.length; i++) {
-					_u.push($scope.allMessages[i].contactId.name);
-					sms.send($scope.allMessages[i].contactId.phone,
-						$scope.allMessages[i].text, options, success, error);
-					//_sms($scope.allMessages.messages[i]);
-				}
+				// for (var i = 0; i < $scope.allMessages.length; i++) {
+				// 	_u.push($scope.allMessages[i].contactId.name);
+				// 	sms.send($scope.allMessages[i].contactId.phone,
+				// 		$scope.allMessages[i].text, options, success, error);
+				// 	//_sms($scope.allMessages.messages[i]);
+				// }
 
-				if (_u.length > 0) {
-					window.plugin.notification.local.add({
-						autoCancel: true,
-						message: 'Messages sent to : ' + _u.join(', ')
-					});
-				}
+				// if (_u.length > 0) {
+				// 	window.plugin.notification.local.add({
+				// 		autoCancel: true,
+				// 		message: 'Messages sent to : ' + _u.join(', ')
+				// 	});
+				// }
 			};
 		});
 	})
 
 	.controller('MessageCtrl', function ($scope, $ionicPlatform, $ionicLoading, $state, $stateParams, localStorageService, Messages) {
-		var a = $stateParams.id;
-		Messages.messages().messages.filter(function(val){
-			if(val.id == $stateParams.id){
-				$scope.message = val;
-			}
-		});
+
+		    // Messages.addMessage(message)
+      // .success(function () {
+      //   $scope.message.contactId = '';
+      //   $scope.message.text = '';
+      //   $scope.message.date = '';
+      //   $scope.loading = false;
+      //   $scope.contact = '';
+      //   $scope.notification = 'Good work, your message is scheduled!';
+      // })
+      // .error(function () {
+      //   $scope.loading = false;
+      // });
+
+		  var addMessage = function (message) {
+    		return $http({
+      		method: 'POST',
+      		url: '/api/messages',
+		      data: message
+		    }).success(function (response) {
+		      console.log(response);
+		    }).error(function (response) {
+		      console.error('addMessage failed', response);
+    		});
+		  }
+		// var a = $stateParams.id;
+		// Messages.messages().messages.filter(function(val){
+		// 	if(val.id == $stateParams.id){
+		// 		$scope.message = val;
+		// 	}
+		// });
 
 		//$scope.allMessages.messages.filter(function (val) {
 		//	if (val.id == $stateParams.id) {
@@ -359,10 +404,10 @@ angular.module('antiSocialite.controllers', [])
 				sms.send($scope.message.contactPhone,
 				$scope.message.text, options, success, error);
 
-				window.plugin.notification.local.add({
-					autoCancel: true,
-					message: 'Messages sent to : ' + _u.join(', ')
-				});
+				// window.plugin.notification.local.add({
+				// 	autoCancel: true,
+				// 	message: 'Messages sent to : ' + _u.join(', ')
+				// });
 
 			};
 		});
@@ -371,10 +416,9 @@ angular.module('antiSocialite.controllers', [])
 	.controller('ContactsCtrl', function ($scope, $ionicLoading, $http,localStorageService) {
 
 		var getAllContacts = function() {
-			console.log('im inside getAllContacts')
 			return $http({
 				method: 'GET',
-				url: 'https://3653d81e.ngrok.io/api/contacts'
+				url: 'http://localhost:3000/api/contacts'
 			})
 			.then(function(response) {
 				return response.data;
@@ -415,6 +459,7 @@ angular.module('antiSocialite.controllers', [])
 			// $scope.contacts = _contacts;
 			getAllContacts()
 			.then(function(results){
+				console.log("inside of getAllContacts");
 				$scope.contacts = results;
 			})
 			$ionicLoading.hide();
