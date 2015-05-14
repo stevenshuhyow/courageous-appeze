@@ -368,20 +368,22 @@ angular.module('antiSocialite.controllers', [])
 		});
 	})
 
-	.controller('ContactsCtrl', function ($scope, $ionicLoading, localStorageService) {
+	.controller('ContactsCtrl', function ($scope, $ionicLoading, $http,localStorageService) {
 
-		$scope.getAllContacts = function() {
-	    $scope.loading = true;
-	    Contacts.fetch()
-	      .then(function(contacts) {
-	        $scope.contacts = contacts;
-	        $scope.loading = false;
-	      })
-	      .catch(function(err) {
-	        console.error(err);
-	        $scope.loading = false;
-	      });
+		var getAllContacts = function() {
+			console.log('im inside getAllContacts')
+			return $http({
+				method: 'GET',
+				url: 'https://3653d81e.ngrok.io/api/contacts'
+			})
+			.then(function(response) {
+				console.log(response.data);
+				console.log("hi")
+				//alert(JSON.stringify(response.data));
+				return response.data;
+			});
   	};
+
 
 		// $ionicLoading.show({
 		// 	template: 'Loading Contacts...'
@@ -413,8 +415,11 @@ angular.module('antiSocialite.controllers', [])
 		// 		}
 		// 	}
 
-			$scope.contacts = _contacts;
-
+			// $scope.contacts = _contacts;
+			getAllContacts()
+			.then(function(results){
+				$scope.contacts = results;
+			})
 			$ionicLoading.hide();
 		})
 
