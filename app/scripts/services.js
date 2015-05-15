@@ -143,6 +143,23 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 
  	  var selected = [];
 
+    var removeContact = function(contact){
+	    return $http({
+	      method: 'DELETE',
+	      url: 'http://a811eaa4.ngrok.io/api/contacts/',
+	      headers: {'Content-Type': 'application/json'},
+	      data: contact,
+	      responseType: 'json'
+	    }).success(function(result) {
+	      if(result) {
+	        return result;
+	      }
+	    }).error(function(error) {
+	      return error;
+	    });
+  	};
+
+
 		var getAllContacts = function() {
 			return $http({
 				method: 'GET',
@@ -156,6 +173,7 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 			});
   	};
 
+
   	var selectedContacts = function(contact) {
   		// console.log("inside of selectedContacts")
   		// console.log("contact", contact)
@@ -166,11 +184,12 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 	  		for(var i = 0; i < selected.length; i++){
 		  		if (selected[i].phone === contact.phone){
 		  			selected.splice(i, 1);
+	      		console.log("inside of splice",selected)
 		  			return;
-	      	} else if (selected[i].phone !== contact.phone){
+	      	} else if (i===selected.length-1 &&selected[i].phone !== contact.phone){
 	      		selected.push(contact);
 	      		// console.log("not selected", contact)
-	      		// console.log(selected)
+	      		console.log(selected)
 	      		return
 	     		}
   			}
@@ -193,6 +212,7 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
    //  }
 
     var recipients = function(){
+    	console.log("inside of recipients")
     	return selected;
     }
 
@@ -215,6 +235,51 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 	})
 
 	.factory('Messages', function ($http) {
+
+  var removeMessage = function(message) {
+  	console.log("inside of remove message factory", message)
+    return $http({
+      method: 'DELETE',
+      url: 'http://a811eaa4.ngrok.io/api/messages',
+      headers: {'Content-Type': 'application/json'},
+      data: message
+    }).success(function (response){
+      console.log('Deleted the message:',response);
+      return response.data;
+    }).error(function (error) {
+      console.log('Unable to remove message from server', response);
+      return error;
+    });
+  }
+
+		// $scope.signup = function (user) {
+  //   	$http.post("http://a811eaa4.ngrok.io/api/users/signup", $scope.user)
+  //   	.success(function(data){
+		// 		//alert("inside Login Ctrl" + data);
+		// 		var token = data.token;
+		// 		//$scope.lonConfig.token = token;
+		// 		//localStorageService.set('lon.courageousTrapeze', token);
+		// 		localStorageService.bind($scope, 'courageousTrapeze', token);
+		// 		localStorageService.set('courageousTrapeze', token);
+		// 		$http.defaults.headers.common['x-access-token'] = token;
+		// 		$state.go("list");
+  //   	})
+		// var getAllContacts = function() {
+		// 	return $http({
+		// 		method: 'GET',
+		// 		url: 'http://a811eaa4.ngrok.io/api/contacts'
+		// 	})
+		// 	.success(function(response) {
+		// 		return response.data;
+		// 	})
+		// 	.error(function(err){
+		// 		console.error("cannot get all contacts", err)
+		// 	});
+  // 	};
+
+
+
+
 
 			// var data = {
 			// 	userId: 'jmyeg',
@@ -254,6 +319,18 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 			});
 		};
 
+		var addMessage = function(message){
+	  	console.log(message);
+  		return $http({
+    		method: 'POST',
+    		url: 'http://a811eaa4.ngrok.io/api/messages',
+	      data: message
+	    }).success(function (response) {
+	      console.log(response);
+	    }).error(function (response) {
+	      console.error('addMessage failed', response);
+  		});
+		}
 
 		var updateMessage = function(message){
 			$http({
@@ -275,7 +352,9 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 		return {
 			getMessages: getMessages,
 			update: updateMessage,
-			remove: deleteMessage
+			remove: deleteMessage,
+			addMessage: addMessage,
+			removeMessage: removeMessage
 		};
 
 

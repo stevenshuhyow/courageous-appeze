@@ -9,9 +9,8 @@
             Send All
         </button>
         <ion-list show-delete="shouldShowDelete">
-            <ion-item ng-repeat="message in allMessages"
-                      class="item-avatar item-remove-animate"
-                      ng-click="edit(message)">
+            <ion-item ng-repeat="message in allMessages" class="item-avatar item-remove-animate" ng-hide="deleted"
+            ng-click="edit(message)">
                 <!--ui-sref="queue.message({id: message.id})">-->
                 <!--ng-href="#/queue/{{message.id}}">-->
 
@@ -24,8 +23,7 @@
                                    ng-click="edit(message)">
                     Edit
                 </ion-option-button> -->
-                <ion-delete-button class="ion-minus-circled"
-                                   ng-click="onItemDelete(message)">
+                <ion-delete-button class="ion-minus-circled" ng-click="removeMessage(message); deleted=true">
                 </ion-delete-button>
             </ion-item>
         </ion-list>

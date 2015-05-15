@@ -227,6 +227,23 @@ angular.module('antiSocialite.controllers', [])
 		// $scope.listCanSwipe = true;
 		// $scope.lonConfig = {};
 		// $scope.lonConfig.isEnabled = localStorageService.get('lonConfig.isEnabled') === 'true' ? true : false;
+		//
+		$scope.removeMessage = function(message){
+			console.log("trying to remove message", message)
+	  	Messages.removeMessage(message)
+	  	.then(function(response){
+	  		Messages.getMessages()
+	  		console.log('Deleted the message:',response);
+	  		// $route.reload();
+        return
+	  	})
+	  	.catch(function(err){
+	  		console.error("unable to delete message", err)
+	  	})
+	  };
+
+
+
 		Messages.getMessages()
 		.then(function(response){
 			$scope.allMessages = response.data;
@@ -325,7 +342,7 @@ angular.module('antiSocialite.controllers', [])
 		});
 	})
 
-	.controller('MessageCtrl', function ($scope, $ionicPlatform, $ionicLoading, $state, $stateParams, localStorageService, Messages, $ionicSideMenuDelegate) {
+	.controller('MessageCtrl', function ($scope, $ionicPlatform, $ionicLoading, $state, $stateParams, localStorageService, Messages, Contacts, $http) {
 
 		    // Messages.addMessage(message)
       // .success(function () {
@@ -349,18 +366,25 @@ angular.module('antiSocialite.controllers', [])
   //   	$ionicSideMenuDelegate.toggleLeft();
   // 		};
 		// }
+		//
+		//
+		$scope.message = {};
 
-	  var addMessage = function (message) {
-  		return $http({
-    		method: 'POST',
-    		url: '/api/messages',
-	      data: message
-	    }).success(function (response) {
-	      console.log(response);
-	    }).error(function (response) {
-	      console.error('addMessage failed', response);
-  		});
-	  }
+		$scope.message.contactId = Contacts.recipients()[0];
+
+		// $scope.setContact = function (contact) {
+	 //    if (contact) {
+	 //      $scope.message.contactId = contact._id;
+	 //    } else {
+	 //      $scope.message.contactId = '';
+	 //    }
+  // 	};
+
+	  $scope.addMessage = function(message){
+	  	// console.log(message)
+	  	return Messages.addMessage(message);
+	  };
+
 		// var a = $stateParams.id;
 		// Messages.messages().messages.filter(function(val){
 		// 	if(val.id == $stateParams.id){
@@ -475,6 +499,9 @@ angular.module('antiSocialite.controllers', [])
     	Contacts.selectedContacts(contact);
     };
 
+    $scope.removeContact = function(contact){
+    	Contacts.removeContact(contact);
+    }
 		// $ionicLoading.show({
 		// 	template: 'Loading Contacts...'
 		// });

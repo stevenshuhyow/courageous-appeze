@@ -14,12 +14,11 @@
             </label>
 
             <ion-list show-delete="shouldShowDelete">
-                <ion-item class="item item-checkbox"
-                ng-repeat="userStorage in contacts | orderBy: 'name' | filter:searchContacts" ng-click="edit(contact)">
+                <ion-item class="item item-checkbox" ng-hide="deleted" ng-repeat="userStorage in contacts | orderBy: 'name' | filter:searchContacts" ng-click="edit(contact)">
                     <h2>{{userStorage.name}}</h2>
                     <p>{{userStorage.phone}}</p>
                     <ion-delete-button class="ion-minus-circled"
-                   ng-click="onItemDelete(message)">
+                   ng-click="onItemDelete(message); deleted=true">
                     </ion-delete-button>
                 </ion-item>
             </ion-list>

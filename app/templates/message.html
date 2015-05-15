@@ -6,11 +6,11 @@
               <span class="input-label">Date</span>
               <input type="date" ng-model="message.date">
             </label>
-            <button class="button button-full button-calm" ng-model="recipient" ng-click="contactList()">Add Recipient</button>
+            <button class="button button-full button-calm"  ng-click="contactList()">Add Recipient</button>
             <label class="item item-input">
                 <textarea placeholder="Content" rows="8" ng-model="message.text"></textarea>
             </label>
-            <button class="button button-full button-calm" ng-click="send()">Schedule Message</button>
+            <button class="button button-full button-calm" ng-click="addMessage(message)">Schedule Message</button>
         </form>
 
 
