@@ -2,7 +2,7 @@
   <ion-content padding="true">
       <ul class="list" ng-repeat="userStorage in contacts">
         <li class="item item-checkbox">
-          <label class="checkbox" ng-model="{{userStorage.name}}">
+          <label class="checkbox" ng-click="updateSelection(userStorage)">
             <input type="checkbox">
           </label>
           {{userStorage.name}}
@@ -11,20 +11,3 @@
   </ion-content>
 </ion-view>
 
-
-           <!--  <label class="dropdown dropdown-scroll" ng-controller="ContactsCtrl">
-            <select ng-options="contact as contact.name for contact in contacts | orderBy: 'name'" ng-model="contact" ng-change="setContact(contact || 'Select Contact')">
-            </label> -->
-
-<!-- <ul class="list">
-
-  <li class="item item-checkbox">
-     <label class="checkbox">
-       <input type="checkbox">
-     </label>
-     Flux Capacitor
-  </li>
-
-  ...
-
-</ul> -->

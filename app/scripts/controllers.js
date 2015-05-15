@@ -425,7 +425,7 @@ angular.module('antiSocialite.controllers', [])
 		});
 	})
 
-	.controller('ContactsCtrl', function ($scope, $ionicLoading, $state, $http,localStorageService) {
+	.controller('ContactsCtrl', function ($scope, $ionicLoading, $state, $http, localStorageService) {
 
 		var getAllContacts = function() {
 			return $http({
@@ -444,7 +444,22 @@ angular.module('antiSocialite.controllers', [])
   		$state.go('addContact');
  		};
 
+  	var selected = $scope.selected = [];
 
+    // Update the selection when a checkbox is clicked.
+    $scope.updateSelection = function(contact) {
+    	console.log(contact)
+
+      if (selected.indexOf(contact) === -1){
+      	selected.push(contact);
+      	console.log("selected", contact)
+      	console.log(selected)
+      } else if (selected.indexOf(contact) !== -1){
+      	selected.splice(selected.indexOf(contact), 1);
+      	console.log("not selected", contact)
+      	console.log(selected)
+      }
+    };
 
 		// $ionicLoading.show({
 		// 	template: 'Loading Contacts...'
@@ -479,8 +494,7 @@ angular.module('antiSocialite.controllers', [])
 			// $scope.contacts = _contacts;
 			getAllContacts()
 			.then(function(results){
-				// console.log("inside of getAllContacts");
-				console.log(results.data)
+				console.log("inside of getAllContacts");
 				$scope.contacts = results.data;
 			})
 			$ionicLoading.hide();
