@@ -321,18 +321,22 @@ angular.module('antiSocialite.controllers', [])
       // .error(function () {
       //   $scope.loading = false;
       // });
+    $scope.contactList = function(){
+    	console.log("inside of contactList")
+    	$state.go('contactList');
+    }
 
-		  var addMessage = function (message) {
-    		return $http({
-      		method: 'POST',
-      		url: '/api/messages',
-		      data: message
-		    }).success(function (response) {
-		      console.log(response);
-		    }).error(function (response) {
-		      console.error('addMessage failed', response);
-    		});
-		  }
+	  var addMessage = function (message) {
+  		return $http({
+    		method: 'POST',
+    		url: '/api/messages',
+	      data: message
+	    }).success(function (response) {
+	      console.log(response);
+	    }).error(function (response) {
+	      console.error('addMessage failed', response);
+  		});
+	  }
 		// var a = $stateParams.id;
 		// Messages.messages().messages.filter(function(val){
 		// 	if(val.id == $stateParams.id){
@@ -421,17 +425,25 @@ angular.module('antiSocialite.controllers', [])
 		});
 	})
 
-	.controller('ContactsCtrl', function ($scope, $ionicLoading, $http,localStorageService) {
+	.controller('ContactsCtrl', function ($scope, $ionicLoading, $state, $http,localStorageService) {
 
 		var getAllContacts = function() {
 			return $http({
 				method: 'GET',
 				url: 'http://localhost:3000/api/contacts'
 			})
-			.then(function(response) {
+			.success(function(response) {
 				return response.data;
+			})
+			.error(function(err){
+				console.error("cannot get all contacts", err)
 			});
   	};
+
+  	$scope.addContact = function(){
+  		$state.go('addContact');
+ 		};
+
 
 
 		// $ionicLoading.show({
@@ -467,12 +479,33 @@ angular.module('antiSocialite.controllers', [])
 			// $scope.contacts = _contacts;
 			getAllContacts()
 			.then(function(results){
-				console.log("inside of getAllContacts");
-				$scope.contacts = results;
+				// console.log("inside of getAllContacts");
+				console.log(results.data)
+				$scope.contacts = results.data;
 			})
 			$ionicLoading.hide();
 		})
 
+
+	.controller('AddContact', function ($scope, $ionicLoading, $http,localStorageService, $state) {
+
+
+		$scope.addContact = function(contact){
+			var contact = {contacts: [contact]}
+    	$http.post('http://localhost:3000/api/contacts', contact)
+	 		return $http({
+	  		method: 'POST',
+	  		url: 'http://localhost:3000/api/contacts'
+	  		})
+	  		.success(function(response){
+	  			$state.go('contacts')
+	  			return response.data;
+	  		})
+	  		.error(function(err){
+	  			console.error("cannot add contact",err)
+	  		})
+	  	};
+	})
 		// function onError(contactError) {
 		// 	$scope.error = contactError;
 		// 	//alert('onError!');
