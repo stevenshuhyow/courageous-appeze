@@ -9,7 +9,7 @@ angular.module('antiSocialite',
  	'LocalStorageModule',
 	'antiSocialite.controllers',
 	'antiSocialite.services'])
-
+//
 
 	.config(['$stateProvider', '$urlRouterProvider', 'localStorageServiceProvider', function($stateProvider, $urlRouterProvider, localStorageServiceProvider) {
 		//var authenticated = ['$q', 'AuthFactory', function ($q, AuthFactory) {
