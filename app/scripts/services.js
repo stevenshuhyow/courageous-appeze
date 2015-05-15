@@ -67,7 +67,7 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 //
 //		function isLoggedIn(redirectToLogin) {
 //			console.log("in auth factory");
-//			return $http.post('http://courageoustrapeze.azurewebsites.net/api/users/signin', {'username':'test', 'password': 'test'})
+//			return $http.post('http://a811eaa4.ngrok.io/api/users/signin', {'username':'test', 'password': 'test'})
 //				.then(function (res) {
 //					factory.userId = res.data.userId;
 //					factory.userName = res.data.userName;
@@ -146,7 +146,7 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 		var getAllContacts = function() {
 			return $http({
 				method: 'GET',
-				url: 'http://localhost:3000/api/contacts'
+				url: 'http://a811eaa4.ngrok.io/api/contacts'
 			})
 			.success(function(response) {
 				return response.data;
@@ -216,44 +216,49 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 
 	.factory('Messages', function ($http) {
 
-			var data = {
-				userId: 'jmyeg',
-				messages:[{
-					id:1,
-					contactId:'2',
-					contactPhone:'8046831201',
-					text: 'im not a robot, im just antisocialite!',
-					date:'2015-05-01'
-				},{
-					id:2,
-					contactId:'3',
-					contactPhone:'9254870772',
-					text: 'im not a robot, im just an antisocialite!',
-					date:'2015-05-01'
-				},{
-					id:3,
-					contactId:'2',
-					contactPhone:'8046831652',
-					text: 'im not a robot, im just antisocialite!',
-					date:'2015-05-01'
-				}
-				]
-			};
-		var getMessage = function () {
-			return $http({
+			// var data = {
+			// 	userId: 'jmyeg',
+			// 	messages:[{
+			// 		id:1,
+			// 		contactId:'2',
+			// 		contactPhone:'8046831201',
+			// 		text: 'im not a robot, im just antisocialite!',
+			// 		date:'2015-05-01'
+			// 	},{
+			// 		id:2,
+			// 		contactId:'3',
+			// 		contactPhone:'9254870772',
+			// 		text: 'im not a robot, im just an antisocialite!',
+			// 		date:'2015-05-01'
+			// 	},{
+			// 		id:3,
+			// 		contactId:'2',
+			// 		contactPhone:'8046831652',
+			// 		text: 'im not a robot, im just antisocialite!',
+			// 		date:'2015-05-01'
+			// 	}
+			// 	]
+			// };
+		var getMessages = function () {
+			console.log("inside of get messages")
+				return $http({
 				method: 'GET',
-				url: 'http://courageoustrapeze.azurewebsites.net/api/messages'
+				url: 'http://a811eaa4.ngrok.io/api/messages'
 			})
-				.then(function(response) {
-					alert(JSON.stringify(response.data));
-					return response.data;
-				});
+			.success(function(response) {
+				// alert(JSON.stringify(response.data));
+				return response;
+			})
+			.error(function(err){
+			console.error("cannot get all messages", err)
+			});
 		};
+
 
 		var updateMessage = function(message){
 			$http({
 				method: 'POST',
-				url: 'http://courageoustrapeze.azurewebsites.net/api/messages',
+				url: 'http://a811eaa4.ngrok.io/api/messages',
 				data: message
 			});
 		};
@@ -262,13 +267,13 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 			//data.messages.splice(data.messages.indexOf(message),1);
 			$http({
 				method: 'DELETE',
-				url: 'http://courageoustrapeze.azurewebsites.net/api/messages',
+				url: 'http://a811eaa4.ngrok.io/api/messages',
 				data: message.id
 			});
 		};
 
 		return {
-			messages: getMessage,
+			getMessages: getMessages,
 			update: updateMessage,
 			remove: deleteMessage
 		};

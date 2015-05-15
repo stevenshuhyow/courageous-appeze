@@ -32,7 +32,7 @@ angular.module('antiSocialite.controllers', [])
 		$scope.user= {};
 
 		$scope.signup = function (user) {
-    	$http.post("http://localhost:3000/api/users/signup", $scope.user)
+    	$http.post("http://a811eaa4.ngrok.io/api/users/signup", $scope.user)
     	.success(function(data){
 				//alert("inside Login Ctrl" + data);
 				var token = data.token;
@@ -56,7 +56,7 @@ angular.module('antiSocialite.controllers', [])
 		$scope.user = {};
 		//$scope.lonConfig.token = '';
 		$scope.login = function () {
-			$http.post('http://localhost:3000/api/users/signin', $scope.user)
+			$http.post('http://a811eaa4.ngrok.io/api/users/signin', $scope.user)
 			.success(function(data) {
 				//alert("inside Login Ctrl" + data);
 				var token = data.token;
@@ -190,18 +190,18 @@ angular.module('antiSocialite.controllers', [])
 
 	})
 
-	.controller('QueueCtrl', function ($scope, $ionicPlatform, $ionicLoading, $state, localStorageService, Messages, $http) {
-		var getMessage = function () {
-			return $http({
-				method: 'GET',
-				url: 'http://localhost:3000/api/messages'
-			})
-				.then(function(response) {
-					//alert(JSON.stringify(response.data));
-					$scope.allMessages = response.data;
-					return response.data;
-				});
-		};
+	.controller('QueueCtrl', function ($scope, $ionicPlatform, $ionicLoading, $state, localStorageService, Messages, $http, Contacts) {
+		// var getMessage = function () {
+		// 	return $http({
+		// 		method: 'GET',
+		// 		url: 'http://a811eaa4.ngrok.io/api/messages'
+		// 	})
+		// 		.then(function(response) {
+		// 			//alert(JSON.stringify(response.data));
+		// 			$scope.allMessages = response.data;
+		// 			return response.data;
+		// 		});
+		// };
 
 		// var updateMessage = function(message){
 		// 	$http({
@@ -227,7 +227,25 @@ angular.module('antiSocialite.controllers', [])
 		// $scope.listCanSwipe = true;
 		// $scope.lonConfig = {};
 		// $scope.lonConfig.isEnabled = localStorageService.get('lonConfig.isEnabled') === 'true' ? true : false;
-		$scope.allMessages = getMessage();
+		Messages.getMessages()
+		.then(function(response){
+			$scope.allMessages = response.data;
+			console.log("response", response.data)
+			return response.data;
+		})
+		.catch(function(err){
+			console.error("cannot get all messages", err)
+		})
+
+
+			Contacts.getAllContacts()
+			.then(function(response) {
+				$scope.contacts = response.data
+				return response.data;
+			})
+			.catch(function(err){
+				console.error("cannot get all contacts", err)
+			});
 
 		// $scope.config = function () {
 		// 	$state.go('List');
@@ -498,10 +516,10 @@ angular.module('antiSocialite.controllers', [])
 
 		$scope.addContact = function(contact){
 			var contact = {contacts: [contact]}
-    	$http.post('http://localhost:3000/api/contacts', contact)
+    	$http.post('http://a811eaa4.ngrok.io/api/contacts', contact)
 	 		return $http({
 	  		method: 'POST',
-	  		url: 'http://localhost:3000/api/contacts'
+	  		url: 'http://a811eaa4.ngrok.io/api/contacts'
 	  		})
 	  		.success(function(response){
 	  			$state.go('contacts')
