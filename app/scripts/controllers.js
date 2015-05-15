@@ -307,7 +307,7 @@ angular.module('antiSocialite.controllers', [])
 		});
 	})
 
-	.controller('MessageCtrl', function ($scope, $ionicPlatform, $ionicLoading, $state, $stateParams, localStorageService, Messages) {
+	.controller('MessageCtrl', function ($scope, $ionicPlatform, $ionicLoading, $state, $stateParams, localStorageService, Messages, $ionicSideMenuDelegate) {
 
 		    // Messages.addMessage(message)
       // .success(function () {
@@ -325,6 +325,12 @@ angular.module('antiSocialite.controllers', [])
     	console.log("inside of contactList")
     	$state.go('contactList');
     }
+
+  //   function ContentController($scope, $ionicSideMenuDelegate) {
+  // 		$scope.toggleLeft = function() {
+  //   	$ionicSideMenuDelegate.toggleLeft();
+  // 		};
+		// }
 
 	  var addMessage = function (message) {
   		return $http({
@@ -425,40 +431,30 @@ angular.module('antiSocialite.controllers', [])
 		});
 	})
 
-	.controller('ContactsCtrl', function ($scope, $ionicLoading, $state, $http, localStorageService) {
+	.controller('ContactsCtrl', function ($scope, $ionicLoading, $state, $http, localStorageService, Contacts) {
 
-		var getAllContacts = function() {
-			return $http({
-				method: 'GET',
-				url: 'http://localhost:3000/api/contacts'
-			})
-			.success(function(response) {
+		$scope.contacts= [];
+
+		$scope.checkedContacts = function(contact){
+			return Contacts.checkedContacts(contact);
+		}
+
+		Contacts.getAllContacts()
+			.then(function(response) {
+				$scope.contacts = response.data
 				return response.data;
 			})
-			.error(function(err){
+			.catch(function(err){
 				console.error("cannot get all contacts", err)
 			});
-  	};
 
   	$scope.addContact = function(){
   		$state.go('addContact');
  		};
 
-  	var selected = $scope.selected = [];
-
     // Update the selection when a checkbox is clicked.
     $scope.updateSelection = function(contact) {
-    	console.log(contact)
-
-      if (selected.indexOf(contact) === -1){
-      	selected.push(contact);
-      	console.log("selected", contact)
-      	console.log(selected)
-      } else if (selected.indexOf(contact) !== -1){
-      	selected.splice(selected.indexOf(contact), 1);
-      	console.log("not selected", contact)
-      	console.log(selected)
-      }
+    	Contacts.selectedContacts(contact);
     };
 
 		// $ionicLoading.show({
@@ -492,11 +488,7 @@ angular.module('antiSocialite.controllers', [])
 		// 	}
 
 			// $scope.contacts = _contacts;
-			getAllContacts()
-			.then(function(results){
-				console.log("inside of getAllContacts");
-				$scope.contacts = results.data;
-			})
+
 			$ionicLoading.hide();
 		})
 
