@@ -1,0 +1,13 @@
+<ion-view hide-back-button="false" title="Add Contact">
+  <ion-content padding="true">
+      <ul class="list" ng-repeat="userStorage in contacts">
+        <li class="item item-checkbox">
+          <label class="checkbox" ng-click="updateSelection(userStorage)">
+            <input type="checkbox">
+          </label>
+          {{userStorage.name}}
+        </li>
+      </ul>
+  </ion-content>
+</ion-view>
+

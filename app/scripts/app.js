@@ -37,7 +37,8 @@ angular.module('antiSocialite',
 			.state('list', {
 				url: '/list',
 				templateUrl: 'templates/list.html',
-				controller: 'List'
+				controller: 'List',
+				authenticate: true
 			})
 
 			.state('intro', {
@@ -59,7 +60,8 @@ angular.module('antiSocialite',
 			.state('queue', {
 				url: '/queue',
 				templateUrl: 'templates/queue.html',
-				abstract: true
+				abstract: true,
+				authenticate: true
 				//data:{
 				//	requireLogin: t`rue
 				//}
@@ -70,7 +72,8 @@ angular.module('antiSocialite',
 			.state('queue.messages', {
 				url: '',
 				templateUrl: 'templates/messages.html',
-				controller: 'QueueCtrl'
+				controller: 'QueueCtrl',
+				authenticate: true
 				//resolve: {
 				//	authenticated: authenticated
 				//}
@@ -78,16 +81,28 @@ angular.module('antiSocialite',
 			.state('addMessage', {
 				url: '/messages/:id',
 				templateUrl: 'templates/message.html',
-				controller: 'MessageCtrl'
+				controller: 'MessageCtrl',
+				authenticate: true
 			})
 			.state('contacts', {
 				templateUrl: 'templates/contacts.html',
 				url: '/contacts',
-				controller: 'ContactsCtrl'
+				controller: 'ContactsCtrl',
+				authenticate: true
 			})
 			.state('signup', {
 				templateUrl: 'templates/signup.html',
 				controller: 'Signup'
+			})
+			.state('addContact', {
+				templateUrl: 'templates/addContact.html',
+				controller: 'AddContact',
+				authenticate: true
+			})
+			.state('contactList', {
+				templateUrl: 'templates/contactList.html',
+				controller: 'ContactsCtrl',
+				authenticate:true
 			});
 
 

@@ -34,7 +34,14 @@ angular.module('antiSocialite.controllers', [])
 		$scope.signup = function (user) {
     	$http.post("http://localhost:3000/api/users/signup", $scope.user)
     	.success(function(data){
-    		$state.go("list")
+				//alert("inside Login Ctrl" + data);
+				var token = data.token;
+				//$scope.lonConfig.token = token;
+				//localStorageService.set('lon.courageousTrapeze', token);
+				localStorageService.bind($scope, 'courageousTrapeze', token);
+				localStorageService.set('courageousTrapeze', token);
+				$http.defaults.headers.common['x-access-token'] = token;
+				$state.go("list");
     	})
     	.error(function(err){
     		$scoope.message = err;
@@ -86,6 +93,7 @@ angular.module('antiSocialite.controllers', [])
 			$state.go('queue.messages');
 		}
 		$scope.logout = function(){
+			localStorageService.remove('courageousTrapeze');
 			$state.go('login');
 		}
 	})
@@ -313,18 +321,22 @@ angular.module('antiSocialite.controllers', [])
       // .error(function () {
       //   $scope.loading = false;
       // });
+    $scope.contactList = function(){
+    	console.log("inside of contactList")
+    	$state.go('contactList');
+    }
 
-		  var addMessage = function (message) {
-    		return $http({
-      		method: 'POST',
-      		url: '/api/messages',
-		      data: message
-		    }).success(function (response) {
-		      console.log(response);
-		    }).error(function (response) {
-		      console.error('addMessage failed', response);
-    		});
-		  }
+	  var addMessage = function (message) {
+  		return $http({
+    		method: 'POST',
+    		url: '/api/messages',
+	      data: message
+	    }).success(function (response) {
+	      console.log(response);
+	    }).error(function (response) {
+	      console.error('addMessage failed', response);
+  		});
+	  }
 		// var a = $stateParams.id;
 		// Messages.messages().messages.filter(function(val){
 		// 	if(val.id == $stateParams.id){
@@ -413,18 +425,41 @@ angular.module('antiSocialite.controllers', [])
 		});
 	})
 
-	.controller('ContactsCtrl', function ($scope, $ionicLoading, $http,localStorageService) {
+	.controller('ContactsCtrl', function ($scope, $ionicLoading, $state, $http, localStorageService) {
 
 		var getAllContacts = function() {
 			return $http({
 				method: 'GET',
 				url: 'http://localhost:3000/api/contacts'
 			})
-			.then(function(response) {
+			.success(function(response) {
 				return response.data;
+			})
+			.error(function(err){
+				console.error("cannot get all contacts", err)
 			});
   	};
 
+  	$scope.addContact = function(){
+  		$state.go('addContact');
+ 		};
+
+  	var selected = $scope.selected = [];
+
+    // Update the selection when a checkbox is clicked.
+    $scope.updateSelection = function(contact) {
+    	console.log(contact)
+
+      if (selected.indexOf(contact) === -1){
+      	selected.push(contact);
+      	console.log("selected", contact)
+      	console.log(selected)
+      } else if (selected.indexOf(contact) !== -1){
+      	selected.splice(selected.indexOf(contact), 1);
+      	console.log("not selected", contact)
+      	console.log(selected)
+      }
+    };
 
 		// $ionicLoading.show({
 		// 	template: 'Loading Contacts...'
@@ -460,11 +495,31 @@ angular.module('antiSocialite.controllers', [])
 			getAllContacts()
 			.then(function(results){
 				console.log("inside of getAllContacts");
-				$scope.contacts = results;
+				$scope.contacts = results.data;
 			})
 			$ionicLoading.hide();
 		})
 
+
+	.controller('AddContact', function ($scope, $ionicLoading, $http,localStorageService, $state) {
+
+
+		$scope.addContact = function(contact){
+			var contact = {contacts: [contact]}
+    	$http.post('http://localhost:3000/api/contacts', contact)
+	 		return $http({
+	  		method: 'POST',
+	  		url: 'http://localhost:3000/api/contacts'
+	  		})
+	  		.success(function(response){
+	  			$state.go('contacts')
+	  			return response.data;
+	  		})
+	  		.error(function(err){
+	  			console.error("cannot add contact",err)
+	  		})
+	  	};
+	})
 		// function onError(contactError) {
 		// 	$scope.error = contactError;
 		// 	//alert('onError!');
