@@ -141,6 +141,8 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 //})
 	.factory('Contacts', function($http) {
 
+ 	  var selected = [];
+
 		var getAllContacts = function() {
 			return $http({
 				method: 'GET',
@@ -153,10 +155,62 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 				console.error("cannot get all contacts", err)
 			});
   	};
+
+  	var selectedContacts = function(contact) {
+  		// console.log("inside of selectedContacts")
+  		// console.log("contact", contact)
+  		if(selected.length === 0){
+      	selected.push(contact);
+      	console.log("selected", selected)
+  		} else {
+	  		for(var i = 0; i < selected.length; i++){
+		  		if (selected[i].phone === contact.phone){
+		  			selected.splice(i, 1);
+		  			return;
+	      	} else if (selected[i].phone !== contact.phone){
+	      		selected.push(contact);
+	      		// console.log("not selected", contact)
+	      		// console.log(selected)
+	      		return
+	     		}
+  			}
+    	}
+  	}
+
+  	// var selectedContacts = function(contact) {
+  	// 	for(var i = 0; i < selected.length; i++){
+	  // 		if (selected[i].phone !== contact.phone){
+   //    		selected.push(contact);
+	  //     	console.log("selected", contact)
+	  //     	console.log(selected)
+
+  	// 		} else {
+	  //     	console.log("not selected", contact)
+	  //     	console.log(selected)
+   //    		selected.splice(i, 1);
+  	// 		}
+   //    }
+   //  }
+
+    var recipients = function(){
+    	return selected;
+    }
+
+    var checkedContacts = function(contact){
+    	for(var i = 0; i < selected.length; i ++){
+				if(selected[i].phone === contact.phone){
+					console.log("i'm true!!!");
+					return true;
+				}
+			}
+    }
+
   	return {
 
-  		getAllContacts: getAllContacts
-
+  		getAllContacts: getAllContacts,
+  		selectedContacts: selectedContacts,
+  		recipients: recipients,
+  		checkedContacts: checkedContacts
   	}
 	})
 

@@ -3,7 +3,7 @@
       <ul class="list" ng-repeat="userStorage in contacts">
         <li class="item item-checkbox">
           <label class="checkbox" ng-click="updateSelection(userStorage)">
-            <input type="checkbox">
+            <input type="checkbox" ng-checked="checkedContacts(userStorage)">
           </label>
           {{userStorage.name}}
         </li>
