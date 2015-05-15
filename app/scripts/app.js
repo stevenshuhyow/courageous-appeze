@@ -101,7 +101,7 @@ angular.module('antiSocialite',
 			})
 			.state('contactList', {
 				templateUrl: 'templates/contactList.html',
-				controller: 'ContactsCtrl',
+				controller: 'MessageCtrl',
 				authenticate:true
 			});
 

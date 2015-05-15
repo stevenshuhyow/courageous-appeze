@@ -139,6 +139,26 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 //	};
 //	return service;
 //})
+	.factory('Contacts', function($http) {
+
+		var getAllContacts = function() {
+			return $http({
+				method: 'GET',
+				url: 'http://localhost:3000/api/contacts'
+			})
+			.success(function(response) {
+				return response.data;
+			})
+			.error(function(err){
+				console.error("cannot get all contacts", err)
+			});
+  	};
+  	return {
+
+  		getAllContacts: getAllContacts
+
+  	}
+	})
 
 	.factory('Messages', function ($http) {
 

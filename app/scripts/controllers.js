@@ -425,20 +425,16 @@ angular.module('antiSocialite.controllers', [])
 		});
 	})
 
-	.controller('ContactsCtrl', function ($scope, $ionicLoading, $state, $http, localStorageService) {
+	.controller('ContactsCtrl', function ($scope, $ionicLoading, $state, $http, localStorageService, Contacts) {
 
-		var getAllContacts = function() {
-			return $http({
-				method: 'GET',
-				url: 'http://localhost:3000/api/contacts'
-			})
-			.success(function(response) {
+		Contacts.getAllContacts()
+			.then(function(response) {
+				$scope.contacts = response.data
 				return response.data;
 			})
-			.error(function(err){
+			.catch(function(err){
 				console.error("cannot get all contacts", err)
 			});
-  	};
 
   	$scope.addContact = function(){
   		$state.go('addContact');
@@ -492,11 +488,7 @@ angular.module('antiSocialite.controllers', [])
 		// 	}
 
 			// $scope.contacts = _contacts;
-			getAllContacts()
-			.then(function(results){
-				console.log("inside of getAllContacts");
-				$scope.contacts = results.data;
-			})
+
 			$ionicLoading.hide();
 		})
 
