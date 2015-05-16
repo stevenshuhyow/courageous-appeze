@@ -382,7 +382,12 @@ angular.module('antiSocialite.controllers', [])
 
 	  $scope.addMessage = function(message){
 	  	// console.log(message)
-	  	return Messages.addMessage(message);
+	  	Messages.addMessage(message)
+	  	.then( function(){
+	  		$scope.message = {};
+	  		Contacts.clearSelected();
+	  		return
+	  	})
 	  };
 
 		// var a = $stateParams.id;
