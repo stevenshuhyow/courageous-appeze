@@ -67,7 +67,7 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 //
 //		function isLoggedIn(redirectToLogin) {
 //			console.log("in auth factory");
-//			return $http.post('http://a811eaa4.ngrok.io/api/users/signin', {'username':'test', 'password': 'test'})
+//			return $http.post('https://antisocialight.herokuapp.com/api/users/signin', {'username':'test', 'password': 'test'})
 //				.then(function (res) {
 //					factory.userId = res.data.userId;
 //					factory.userName = res.data.userName;
@@ -146,7 +146,7 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
     var removeContact = function(contact){
 	    return $http({
 	      method: 'DELETE',
-	      url: 'http://a811eaa4.ngrok.io/api/contacts/',
+	      url: 'https://antisocialight.herokuapp.com/api/contacts/',
 	      headers: {'Content-Type': 'application/json'},
 	      data: contact,
 	      responseType: 'json'
@@ -162,19 +162,19 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
   	var clearSelected = function(){
   		selected = [];
   		return;
-  	}
+  	};
 
 
 		var getAllContacts = function() {
 			return $http({
 				method: 'GET',
-				url: 'http://a811eaa4.ngrok.io/api/contacts'
+				url: 'https://antisocialight.herokuapp.com/api/contacts'
 			})
 			.success(function(response) {
 				return response.data;
 			})
 			.error(function(err){
-				console.error("cannot get all contacts", err)
+				console.error("cannot get all contacts", err);
 			});
   	};
 
@@ -184,22 +184,22 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
   		// console.log("contact", contact)
   		if(selected.length === 0){
       	selected.push(contact);
-      	console.log("selected", selected)
+      	console.log("selected", selected);
   		} else {
 	  		for(var i = 0; i < selected.length; i++){
 		  		if (selected[i].phone === contact.phone){
 		  			selected.splice(i, 1);
-	      		console.log("inside of splice",selected)
+	      		console.log("inside of splice",selected);
 		  			return;
 	      	} else if (i===selected.length-1 &&selected[i].phone !== contact.phone){
 	      		selected.push(contact);
 	      		// console.log("not selected", contact)
-	      		console.log(selected)
-	      		return
+	      		console.log(selected);
+	      		return;
 	     		}
   			}
     	}
-  	}
+  	};
 
   	// var selectedContacts = function(contact) {
   	// 	for(var i = 0; i < selected.length; i++){
@@ -217,9 +217,9 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
    //  }
 
     var recipients = function(){
-    	console.log("inside of recipients")
+    	console.log("inside of recipients");
     	return selected;
-    }
+    };
 
     var checkedContacts = function(contact){
     	for(var i = 0; i < selected.length; i ++){
@@ -228,7 +228,7 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 					return true;
 				}
 			}
-    }
+    };
 
   	return {
 
@@ -237,16 +237,16 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
   		recipients: recipients,
   		checkedContacts: checkedContacts,
   		clearSelected: clearSelected
-  	}
+  	};
 	})
 
 	.factory('Messages', function ($http) {
 
   var removeMessage = function(message) {
-  	console.log("inside of remove message factory", message)
+  	console.log("inside of remove message factory", message);
     return $http({
       method: 'DELETE',
-      url: 'http://a811eaa4.ngrok.io/api/messages',
+      url: 'https://antisocialight.herokuapp.com/api/messages',
       headers: {'Content-Type': 'application/json'},
       data: message
     }).success(function (response){
@@ -256,10 +256,10 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
       console.log('Unable to remove message from server', response);
       return error;
     });
-  }
+  };
 
 		// $scope.signup = function (user) {
-  //   	$http.post("http://a811eaa4.ngrok.io/api/users/signup", $scope.user)
+  //   	$http.post("https://antisocialight.herokuapp.com/api/users/signup", $scope.user)
   //   	.success(function(data){
 		// 		//alert("inside Login Ctrl" + data);
 		// 		var token = data.token;
@@ -273,7 +273,7 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 		// var getAllContacts = function() {
 		// 	return $http({
 		// 		method: 'GET',
-		// 		url: 'http://a811eaa4.ngrok.io/api/contacts'
+		// 		url: 'https://antisocialight.herokuapp.com/api/contacts'
 		// 	})
 		// 	.success(function(response) {
 		// 		return response.data;
@@ -311,17 +311,17 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 			// 	]
 			// };
 		var getMessages = function () {
-			console.log("inside of get messages")
+			console.log("inside of get messages");
 				return $http({
 				method: 'GET',
-				url: 'http://a811eaa4.ngrok.io/api/messages'
+				url: 'https://antisocialight.herokuapp.com/api/messages'
 			})
 			.success(function(response) {
 				// alert(JSON.stringify(response.data));
 				return response;
 			})
 			.error(function(err){
-			console.error("cannot get all messages", err)
+			console.error("cannot get all messages", err);
 			});
 		};
 
@@ -329,19 +329,19 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 	  	console.log(message);
   		return $http({
     		method: 'POST',
-    		url: 'http://a811eaa4.ngrok.io/api/messages',
+    		url: 'https://antisocialight.herokuapp.com/api/messages',
 	      data: message
 	    }).success(function (response) {
 	      console.log(response);
 	    }).error(function (response) {
 	      console.error('addMessage failed', response);
   		});
-		}
+		};
 
 		var updateMessage = function(message){
 			$http({
 				method: 'POST',
-				url: 'http://a811eaa4.ngrok.io/api/messages',
+				url: 'https://antisocialight.herokuapp.com/api/messages',
 				data: message
 			});
 		};
@@ -350,7 +350,7 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 			//data.messages.splice(data.messages.indexOf(message),1);
 			$http({
 				method: 'DELETE',
-				url: 'http://a811eaa4.ngrok.io/api/messages',
+				url: 'https://antisocialight.herokuapp.com/api/messages',
 				data: message.id
 			});
 		};
