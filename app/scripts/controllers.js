@@ -11,8 +11,7 @@ angular.module('antiSocialite.controllers', [])
 			//	$state.go('login');
 			//	//$location.path('/login');
 			//}else{
-				localStorageService.set('skip', false);
-				$state.go('queue.messages');
+				$state.go('list');
 			//}
 		};
 		$scope.next = function () {
@@ -41,7 +40,7 @@ angular.module('antiSocialite.controllers', [])
 				localStorageService.bind($scope, 'courageousTrapeze', token);
 				localStorageService.set('courageousTrapeze', token);
 				$http.defaults.headers.common['x-access-token'] = token;
-				$state.go("list");
+				$state.go("intro");
     	})
     	.error(function(err){
     		$scoope.message = err;
@@ -229,16 +228,15 @@ angular.module('antiSocialite.controllers', [])
 		// $scope.lonConfig.isEnabled = localStorageService.get('lonConfig.isEnabled') === 'true' ? true : false;
 		//
 		$scope.removeMessage = function(message){
-			console.log("trying to remove message", message)
+			// console.log("trying to remove message", message)
 	  	Messages.removeMessage(message)
 	  	.then(function(response){
-	  		Messages.getMessages()
-	  		console.log('Deleted the message:',response);
+	  		// console.log('Deleted the message:',response);
 	  		// $route.reload();
-        return
+        return;
 	  	})
 	  	.catch(function(err){
-	  		console.error("unable to delete message", err)
+	  		console.error("unable to delete message", err);
 	  	})
 	  };
 
@@ -257,7 +255,7 @@ angular.module('antiSocialite.controllers', [])
 
 			Contacts.getAllContacts()
 			.then(function(response) {
-				$scope.contacts = response.data
+				$scope.contacts = response.data;
 				return response.data;
 			})
 			.catch(function(err){
@@ -386,7 +384,7 @@ angular.module('antiSocialite.controllers', [])
 	  	.then( function(){
 	  		$scope.message = {};
 	  		Contacts.clearSelected();
-	  		return
+	  		return;
 	  	})
 	  };
 

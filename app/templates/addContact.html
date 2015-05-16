@@ -8,7 +8,7 @@
         </label>
         <label class="item item-input item-stacked-label">
           <span class="input-label">Telephone</span>
-          <input type="tel" ng-model="contact.phone" placeholder="XXX-XXX-XXXX">
+          <input type="tel" ng-model="contact.phone" minlength="10" maxlength="10" placeholder="XXX-XXX-XXXX">
         </label>
         <button class="button button-full button-calm" ng-click="addContact(contact)">Submit</button>
       </div>
