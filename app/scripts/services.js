@@ -67,7 +67,7 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 //
 //		function isLoggedIn(redirectToLogin) {
 //			console.log("in auth factory");
-//			return $http.post('http://courageoustrapeze.azurewebsites.net/api/users/signin', {'username':'test', 'password': 'test'})
+//			return $http.post('http://a811eaa4.ngrok.io/api/users/signin', {'username':'test', 'password': 'test'})
 //				.then(function (res) {
 //					factory.userId = res.data.userId;
 //					factory.userName = res.data.userName;
@@ -143,10 +143,32 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 
  	  var selected = [];
 
+    var removeContact = function(contact){
+	    return $http({
+	      method: 'DELETE',
+	      url: 'http://a811eaa4.ngrok.io/api/contacts/',
+	      headers: {'Content-Type': 'application/json'},
+	      data: contact,
+	      responseType: 'json'
+	    }).success(function(result) {
+	      if(result) {
+	        return result;
+	      }
+	    }).error(function(error) {
+	      return error;
+	    });
+  	};
+
+  	var clearSelected = function(){
+  		selected = [];
+  		return;
+  	}
+
+
 		var getAllContacts = function() {
 			return $http({
 				method: 'GET',
-				url: 'http://localhost:3000/api/contacts'
+				url: 'http://a811eaa4.ngrok.io/api/contacts'
 			})
 			.success(function(response) {
 				return response.data;
@@ -155,6 +177,7 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 				console.error("cannot get all contacts", err)
 			});
   	};
+
 
   	var selectedContacts = function(contact) {
   		// console.log("inside of selectedContacts")
@@ -166,11 +189,12 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 	  		for(var i = 0; i < selected.length; i++){
 		  		if (selected[i].phone === contact.phone){
 		  			selected.splice(i, 1);
+	      		console.log("inside of splice",selected)
 		  			return;
-	      	} else if (selected[i].phone !== contact.phone){
+	      	} else if (i===selected.length-1 &&selected[i].phone !== contact.phone){
 	      		selected.push(contact);
 	      		// console.log("not selected", contact)
-	      		// console.log(selected)
+	      		console.log(selected)
 	      		return
 	     		}
   			}
@@ -193,6 +217,7 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
    //  }
 
     var recipients = function(){
+    	console.log("inside of recipients")
     	return selected;
     }
 
@@ -210,50 +235,113 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
   		getAllContacts: getAllContacts,
   		selectedContacts: selectedContacts,
   		recipients: recipients,
-  		checkedContacts: checkedContacts
+  		checkedContacts: checkedContacts,
+  		clearSelected: clearSelected
   	}
 	})
 
 	.factory('Messages', function ($http) {
 
-			var data = {
-				userId: 'jmyeg',
-				messages:[{
-					id:1,
-					contactId:'2',
-					contactPhone:'8046831201',
-					text: 'im not a robot, im just antisocialite!',
-					date:'2015-05-01'
-				},{
-					id:2,
-					contactId:'3',
-					contactPhone:'9254870772',
-					text: 'im not a robot, im just an antisocialite!',
-					date:'2015-05-01'
-				},{
-					id:3,
-					contactId:'2',
-					contactPhone:'8046831652',
-					text: 'im not a robot, im just antisocialite!',
-					date:'2015-05-01'
-				}
-				]
-			};
-		var getMessage = function () {
-			return $http({
+  var removeMessage = function(message) {
+  	console.log("inside of remove message factory", message)
+    return $http({
+      method: 'DELETE',
+      url: 'http://a811eaa4.ngrok.io/api/messages',
+      headers: {'Content-Type': 'application/json'},
+      data: message
+    }).success(function (response){
+      console.log('Deleted the message:',response);
+      return response.data;
+    }).error(function (error) {
+      console.log('Unable to remove message from server', response);
+      return error;
+    });
+  }
+
+		// $scope.signup = function (user) {
+  //   	$http.post("http://a811eaa4.ngrok.io/api/users/signup", $scope.user)
+  //   	.success(function(data){
+		// 		//alert("inside Login Ctrl" + data);
+		// 		var token = data.token;
+		// 		//$scope.lonConfig.token = token;
+		// 		//localStorageService.set('lon.courageousTrapeze', token);
+		// 		localStorageService.bind($scope, 'courageousTrapeze', token);
+		// 		localStorageService.set('courageousTrapeze', token);
+		// 		$http.defaults.headers.common['x-access-token'] = token;
+		// 		$state.go("list");
+  //   	})
+		// var getAllContacts = function() {
+		// 	return $http({
+		// 		method: 'GET',
+		// 		url: 'http://a811eaa4.ngrok.io/api/contacts'
+		// 	})
+		// 	.success(function(response) {
+		// 		return response.data;
+		// 	})
+		// 	.error(function(err){
+		// 		console.error("cannot get all contacts", err)
+		// 	});
+  // 	};
+
+
+
+
+
+			// var data = {
+			// 	userId: 'jmyeg',
+			// 	messages:[{
+			// 		id:1,
+			// 		contactId:'2',
+			// 		contactPhone:'8046831201',
+			// 		text: 'im not a robot, im just antisocialite!',
+			// 		date:'2015-05-01'
+			// 	},{
+			// 		id:2,
+			// 		contactId:'3',
+			// 		contactPhone:'9254870772',
+			// 		text: 'im not a robot, im just an antisocialite!',
+			// 		date:'2015-05-01'
+			// 	},{
+			// 		id:3,
+			// 		contactId:'2',
+			// 		contactPhone:'8046831652',
+			// 		text: 'im not a robot, im just antisocialite!',
+			// 		date:'2015-05-01'
+			// 	}
+			// 	]
+			// };
+		var getMessages = function () {
+			console.log("inside of get messages")
+				return $http({
 				method: 'GET',
-				url: 'http://courageoustrapeze.azurewebsites.net/api/messages'
+				url: 'http://a811eaa4.ngrok.io/api/messages'
 			})
-				.then(function(response) {
-					alert(JSON.stringify(response.data));
-					return response.data;
-				});
+			.success(function(response) {
+				// alert(JSON.stringify(response.data));
+				return response;
+			})
+			.error(function(err){
+			console.error("cannot get all messages", err)
+			});
 		};
+
+		var addMessage = function(message){
+	  	console.log(message);
+  		return $http({
+    		method: 'POST',
+    		url: 'http://a811eaa4.ngrok.io/api/messages',
+	      data: message
+	    }).success(function (response) {
+	      console.log(response);
+	    }).error(function (response) {
+	      console.error('addMessage failed', response);
+  		});
+		}
 
 		var updateMessage = function(message){
 			$http({
 				method: 'POST',
-				url: 'http://courageoustrapeze.azurewebsites.net/api/messages',
+				url: 'http://a811eaa4.ngrok.io/api/messages',
 				data: message
 			});
 		};
@@ -262,15 +350,17 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 			//data.messages.splice(data.messages.indexOf(message),1);
 			$http({
 				method: 'DELETE',
-				url: 'http://courageoustrapeze.azurewebsites.net/api/messages',
+				url: 'http://a811eaa4.ngrok.io/api/messages',
 				data: message.id
 			});
 		};
 
 		return {
-			messages: getMessage,
+			getMessages: getMessages,
 			update: updateMessage,
-			remove: deleteMessage
+			remove: deleteMessage,
+			addMessage: addMessage,
+			removeMessage: removeMessage
 		};
 
 
