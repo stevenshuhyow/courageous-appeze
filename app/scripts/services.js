@@ -102,43 +102,44 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 //
 //})
 
-//.factory('AuthenticationService', function($rootScope, $http, authService, localStorageService) {
-//	var service = {
-//		login: function(user) {
-//			$http.post('https://courageoustrapeze.azurewebsites.net/api/users/signin', { user: user }, { ignoreAuthModule: true })
-//				.success(function (data, status, headers, config) {
-//
-//					$http.defaults.headers.common.Authorization = data.authorizationToken;  // Step 1
-//
-//					// Need to inform the http-auth-interceptor that
-//					// the user has logged in successfully.  To do this, we pass in a function that
-//					// will configure the request headers with the authorization token so
-//					// previously failed requests(aka with status == 401) will be resent with the
-//					// authorization token placed in the header
-//					authService.loginConfirmed(data, function(config) {  // Step 2 & 3
-//						config.headers.Authorization = data.authorizationToken;
-//						localStorageService.set('courageousTrapeze', data.authorizationToken);
-//						return config;
-//					});
-//				})
-//				.error(function (data, status, headers, config) {
-//					$rootScope.$broadcast('event:auth-login-failed', status);
-//				});
-//		},
-//		logout: function(user) {
-//			$http.post('https://logout', {}, { ignoreAuthModule: true })
-//				.finally(function(data) {
-//					localStorageService.remove('courageousTrapeze');
-//					delete $http.defaults.headers.common.Authorization;
-//					$rootScope.$broadcast('event:auth-logout-complete');
-//				});
-//		},
-//		loginCancelled: function() {
-//			authService.loginCancelled();
-//		}
-//	};
-//	return service;
-//})
+
+		//.factory('AuthenticationService', function($rootScope, $http, authService, localStorageService) {
+		//	var service = {
+		//		login: function(user) {
+		//			$http.post('https://courageoustrapeze.azurewebsites.net/api/users/signin', { user: user }, { ignoreAuthModule: true })
+		//				.success(function (data, status, headers, config) {
+		//
+		//					$http.defaults.headers.common.Authorization = data.authorizationToken;  // Step 1
+		//
+		//					// Need to inform the http-auth-interceptor that
+		//					// the user has logged in successfully.  To do this, we pass in a function that
+		//					// will configure the request headers with the authorization token so
+		//					// previously failed requests(aka with status == 401) will be resent with the
+		//					// authorization token placed in the header
+		//					authService.loginConfirmed(data, function(config) {  // Step 2 & 3
+		//						config.headers.Authorization = data.authorizationToken;
+		//						localStorageService.set('courageousTrapeze', data.authorizationToken);
+		//						return config;
+		//					});
+		//				})
+		//				.error(function (data, status, headers, config) {
+		//					$rootScope.$broadcast('event:auth-login-failed', status);
+		//				});
+		//		},
+		//		logout: function(user) {
+		//			$http.post('https://logout', {}, { ignoreAuthModule: true })
+		//				.finally(function(data) {
+		//					localStorageService.remove('courageousTrapeze');
+		//					delete $http.defaults.headers.common.Authorization;
+		//					$rootScope.$broadcast('event:auth-logout-complete');
+		//				});
+		//		},
+		//		loginCancelled: function() {
+		//			authService.loginCancelled();
+		//		}
+		//	};
+		//	return service;
+		//})
 	.factory('Contacts', function($http) {
 
  	  var selected = [];
@@ -365,6 +366,50 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 
 
 	})
+
+.factory('Polling', ['$http', function($https){
+	var pollForAndSendMessages = function() {
+		$http({
+		method: 'GET',
+		url: 'http://a811eaa4.ngrok.io/api/messages/pending'
+	})
+		.then(function(response) {
+			var messagesToSend = response.data;
+				
+			//CONFIGURATION
+			var options = {
+				replaceLineBreaks: false, // true to replace \n by a new line, false by default
+				android: {
+					intent: ''  // send SMS with the native android SMS messaging
+				}
+			};
+			var success = function () {
+				alert('Message sent successfully');
+			};
+			var error = function (e) {
+				alert('Message Failed:' + e);
+			};
+			
+			var _u = [];
+
+			for (var i = 0; i < messagesToSend.length; i++) {
+				_u.push(messagesToSend[i].contactId.name);
+				sms.send(messagesToSend[i].contactId.phone, $scope.allMessages[i].text, options, success, error);
+			}
+
+			if (_u.length > 0) {
+				window.plugin.notification.local.add({
+					autoCancel: true,
+					message: 'Messages sent to : ' + _u.join(', ')
+				});
+			}
+		});
+	};
+
+	return {
+		pollForAndSendMessages: pollForAndSendMessages
+	}
+}])
 
 .factory('AttachTokens', ['$window', function($window, localStorageServiceProvider) {
 	// this is an $httpInterceptor

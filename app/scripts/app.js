@@ -114,25 +114,21 @@ angular.module('antiSocialite',
 
 	}])
 
-	.run(['$ionicPlatform', '$rootScope', 'localStorageService', '$location', '$timeout', '$state', function($ionicPlatform, $rootScope, localStorageService, $location, $timeout, $state) {
+	.run(['$ionicPlatform', '$rootScope', 'localStorageService', '$location', '$timeout', '$state', 'Polling', function($ionicPlatform, $rootScope, localStorageService, $location, $timeout, $state, Polling) {
 		//var authenticated = ['$q', 'Auth', function ($q, Auth) {
-		//	var deferred = $q.defer();
-		//	Auth.isLoggedIn(false)
-		//		.then(function (isLoggedIn) {
-		//			if (isLoggedIn) {
-		//				deferred.resolve();
-		//			} else {
-		//				deferred.reject('Not logged in');
-		//			}
-		//		});
-		//	return deferred.promise;
-		//}];
+			//	var deferred = $q.defer();
+			//	Auth.isLoggedIn(false)
+			//		.then(function (isLoggedIn) {
+			//			if (isLoggedIn) {
+			//				deferred.resolve();
+			//			} else {
+			//				deferred.reject('Not logged in');
+			//			}
+			//		});
+			//	return deferred.promise;
+			//}];
 
-
-
-
-
-		//console.log("in .run");
+			//console.log("in .run");
 		$ionicPlatform.ready(function() {
 				if (window.cordova && window.cordova.plugins.Keyboard) {
 				cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -157,12 +153,9 @@ angular.module('antiSocialite',
 
 	    // Called when background mode has been activated
 	    cordova.plugins.backgroundMode.onactivate = function () {
-	        setTimeout(function () {
-	            // Modify the currently displayed notification
-	            cordova.plugins.backgroundMode.configure({
-	                text:'Running in background for more than 5s now.'
-	            });
-	        }, 5000);
+        setInterval(function () {
+          Polling.pollForAndSendMessages();	
+        }, 60000);
 	    };
 
 
@@ -187,34 +180,34 @@ angular.module('antiSocialite',
 			$rootScope.$on('$stateChangeStart',
 				function(event, toState, toParams, fromState) {
 					//alert('in state change start');
-					//if (next.$$route && next.$$route.authenticate && !Auth.isAuth()) {
-					//	$location.path('/');
-					//}
-					//var requireLogin = toState.data.requireLogin;
-					//
-					//if (requireLogin && typeof $rootScope.currentUser === 'undefined') {
-					//	event.preventDefault();
-					//
-					//	loginModal()
-					//		.then(function () {
-					//			return $state.go(toState.name, toParams);
-					//		})
-					//		.catch(function () {
-					//			return $state.go('welcome');
-					//		});
-					//}
-
-					//$state.go('login');
-					//console.log('test');
-					//if(!localStorage.getItem("courageousTrapeze")){
-						//loginModal()
+						//if (next.$$route && next.$$route.authenticate && !Auth.isAuth()) {
+						//	$location.path('/');
+						//}
+						//var requireLogin = toState.data.requireLogin;
+						//
+						//if (requireLogin && typeof $rootScope.currentUser === 'undefined') {
+						//	event.preventDefault();
+						//
+						//	loginModal()
 						//		.then(function () {
 						//			return $state.go(toState.name, toParams);
 						//		})
 						//		.catch(function () {
 						//			return $state.go('welcome');
 						//		});
-					//}
+						//}
+
+						//$state.go('login');
+						//console.log('test');
+						//if(!localStorage.getItem("courageousTrapeze")){
+							//loginModal()
+							//		.then(function () {
+							//			return $state.go(toState.name, toParams);
+							//		})
+							//		.catch(function () {
+							//			return $state.go('welcome');
+							//		});
+						//}
 
 					skipIntro = localStorageService.get('skip') === 'true' ? true : false;
 

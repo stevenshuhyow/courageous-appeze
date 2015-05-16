@@ -200,12 +200,12 @@ angular.module('antiSocialite.controllers', [])
 		// 			$scope.allMessages = response.data;
 		// 			return response.data;
 		// 		});
-		// };
+
 
 		// var updateMessage = function(message){
 		// 	$http({
 		// 		method: 'POST',
-		// 		url: 'https://localhost:3000/api/messages',
+		// 		url: 'https://a811eaa4.ngrok.io/api/messages',
 		// 		data: message
 		// 	});
 		// };
@@ -214,7 +214,7 @@ angular.module('antiSocialite.controllers', [])
 		// 	//data.messages.splice(data.messages.indexOf(message),1);
 		// 	$http({
 		// 		method: 'DELETE',
-		// 		url: 'https://localhost:3000o/api/messages',
+		// 		url: 'https://a811eaa4.ngrok.ioo/api/messages',
 		// 		data: message.id
 		// 	});
 		// };
