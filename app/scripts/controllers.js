@@ -11,8 +11,7 @@ angular.module('antiSocialite.controllers', [])
 			//	$state.go('login');
 			//	//$location.path('/login');
 			//}else{
-				localStorageService.set('skip', false);
-				$state.go('queue.messages');
+				$state.go('list');
 			//}
 		};
 		$scope.next = function () {
@@ -41,7 +40,7 @@ angular.module('antiSocialite.controllers', [])
 				localStorageService.bind($scope, 'courageousTrapeze', token);
 				localStorageService.set('courageousTrapeze', token);
 				$http.defaults.headers.common['x-access-token'] = token;
-				$state.go("list");
+				$state.go("intro");
     	})
     	.error(function(err){
     		$scoope.message = err;
@@ -230,7 +229,7 @@ angular.module('antiSocialite.controllers', [])
 		//
 		$scope.removeMessage = function(message){
 			// console.log("trying to remove message", message)
-	  	Messages.removeMessage(message);
+	  	Messages.removeMessage(message)
 	  	.then(function(response){
 	  		// console.log('Deleted the message:',response);
 	  		// $route.reload();
