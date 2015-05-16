@@ -159,6 +159,11 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
 	    });
   	};
 
+  	var clearSelected = function(){
+  		selected = [];
+  		return;
+  	}
+
 
 		var getAllContacts = function() {
 			return $http({
@@ -230,7 +235,8 @@ angular.module('antiSocialite.services', ['http-auth-interceptor', 'config'])
   		getAllContacts: getAllContacts,
   		selectedContacts: selectedContacts,
   		recipients: recipients,
-  		checkedContacts: checkedContacts
+  		checkedContacts: checkedContacts,
+  		clearSelected: clearSelected
   	}
 	})
 
