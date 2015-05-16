@@ -147,17 +147,23 @@ angular.module('antiSocialite',
 				});
 
 			// Android customization
-	    cordova.plugins.backgroundMode.setDefaults({ text:'Doing heavy tasks.'});
-	    // Enable background mode
-	    cordova.plugins.backgroundMode.enable();
+		    cordova.plugins.backgroundMode.setDefaults({ text:'Watching scheduled messages'});
+		    // Enable background mode
+		    cordova.plugins.backgroundMode.enable();
 
-	    // Called when background mode has been activated
-	    cordova.plugins.backgroundMode.onactivate = function () {
-        setInterval(function () {
-          Polling.pollForAndSendMessages();	
-        }, 60000);
-	    };
+		    var intervalID;
 
+		    // Called when background mode has been activated
+		    cordova.plugins.backgroundMode.onactivate = function () {
+
+		        intervalID = setInterval(function () {
+		          Polling.pollForAndSendMessages();	
+		        }, 60000);
+		    };
+
+		    cordova.plugins.backgroundMode.ondeactivate = function() {
+		    	clearInterval(intervalID);
+		    };
 
 			var skipIntro;
 
