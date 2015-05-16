@@ -31,7 +31,7 @@ angular.module('antiSocialite.controllers', [])
 		$scope.user= {};
 
 		$scope.signup = function (user) {
-    	$http.post("http://a811eaa4.ngrok.io/api/users/signup", $scope.user)
+    	$http.post('https://antisocialight.herokuapp.com/api/users/signup', $scope.user)
     	.success(function(data){
 				//alert("inside Login Ctrl" + data);
 				var token = data.token;
@@ -40,11 +40,11 @@ angular.module('antiSocialite.controllers', [])
 				localStorageService.bind($scope, 'courageousTrapeze', token);
 				localStorageService.set('courageousTrapeze', token);
 				$http.defaults.headers.common['x-access-token'] = token;
-				$state.go("intro");
+				$state.go('intro');
     	})
     	.error(function(err){
-    		$scoope.message = err;
-    	})
+    		$scope.message = err;
+    	});
   	};
 
 	})
@@ -55,7 +55,7 @@ angular.module('antiSocialite.controllers', [])
 		$scope.user = {};
 		//$scope.lonConfig.token = '';
 		$scope.login = function () {
-			$http.post('http://a811eaa4.ngrok.io/api/users/signin', $scope.user)
+			$http.post('https://antisocialight.herokuapp.com/api/users/signin', $scope.user)
 			.success(function(data) {
 				//alert("inside Login Ctrl" + data);
 				var token = data.token;
@@ -64,17 +64,17 @@ angular.module('antiSocialite.controllers', [])
 				localStorageService.bind($scope, 'courageousTrapeze', token);
 				localStorageService.set('courageousTrapeze', token);
 				$http.defaults.headers.common['x-access-token'] = token;
-				$state.go("list");
+				$state.go('list');
 			})
 				.error(function(err){
 					$scope.message = err;
 					//$state.go("intro");
-				})
-		}
+				});
+		};
 
 		$scope.signup = function(){
-			$state.go('signup')
-		}
+			$state.go('signup');
+		};
 
 	})
 
@@ -82,19 +82,19 @@ angular.module('antiSocialite.controllers', [])
 
 		$scope.addMessage = function(){
 			$state.go('addMessage');
-		}
+		};
 
 		$scope.contacts = function(){
 			$state.go('contacts');
-		}
+		};
 
 		$scope.allMessages = function(){
 			$state.go('queue.messages');
-		}
+		};
 		$scope.logout = function(){
 			localStorageService.remove('courageousTrapeze');
 			$state.go('login');
-		}
+		};
 	})
 	//	$scope.message = '';
 	//
@@ -193,7 +193,7 @@ angular.module('antiSocialite.controllers', [])
 		// var getMessage = function () {
 		// 	return $http({
 		// 		method: 'GET',
-		// 		url: 'http://a811eaa4.ngrok.io/api/messages'
+		// 		url: 'https://antisocialight.herokuapp.com/api/messages'
 		// 	})
 		// 		.then(function(response) {
 		// 			//alert(JSON.stringify(response.data));
@@ -237,7 +237,7 @@ angular.module('antiSocialite.controllers', [])
 	  	})
 	  	.catch(function(err){
 	  		console.error("unable to delete message", err);
-	  	})
+	  	});
 	  };
 
 
@@ -245,12 +245,12 @@ angular.module('antiSocialite.controllers', [])
 		Messages.getMessages()
 		.then(function(response){
 			$scope.allMessages = response.data;
-			console.log("response", response.data)
+			console.log("response", response.data);
 			return response.data;
 		})
 		.catch(function(err){
-			console.error("cannot get all messages", err)
-		})
+			console.error("cannot get all messages", err);
+		});
 
 
 			Contacts.getAllContacts()
@@ -259,7 +259,7 @@ angular.module('antiSocialite.controllers', [])
 				return response.data;
 			})
 			.catch(function(err){
-				console.error("cannot get all contacts", err)
+				console.error("cannot get all contacts", err);
 			});
 
 		// $scope.config = function () {
@@ -355,9 +355,9 @@ angular.module('antiSocialite.controllers', [])
       //   $scope.loading = false;
       // });
     $scope.contactList = function(){
-    	console.log("inside of contactList")
+    	console.log("inside of contactList");
     	$state.go('contactList');
-    }
+    };
 
   //   function ContentController($scope, $ionicSideMenuDelegate) {
   // 		$scope.toggleLeft = function() {
@@ -385,7 +385,7 @@ angular.module('antiSocialite.controllers', [])
 	  		$scope.message = {};
 	  		Contacts.clearSelected();
 	  		return;
-	  	})
+	  	});
 	  };
 
 		// var a = $stateParams.id;
@@ -482,15 +482,15 @@ angular.module('antiSocialite.controllers', [])
 
 		$scope.checkedContacts = function(contact){
 			return Contacts.checkedContacts(contact);
-		}
+		};
 
 		Contacts.getAllContacts()
 			.then(function(response) {
-				$scope.contacts = response.data
+				$scope.contacts = response.data;
 				return response.data;
 			})
 			.catch(function(err){
-				console.error("cannot get all contacts", err)
+				console.error("cannot get all contacts", err);
 			});
 
   	$scope.addContact = function(){
@@ -504,7 +504,7 @@ angular.module('antiSocialite.controllers', [])
 
     $scope.removeContact = function(contact){
     	Contacts.removeContact(contact);
-    }
+    };
 		// $ionicLoading.show({
 		// 	template: 'Loading Contacts...'
 		// });
@@ -545,21 +545,21 @@ angular.module('antiSocialite.controllers', [])
 
 
 		$scope.addContact = function(contact){
-			var contact = {contacts: [contact]}
-    	$http.post('http://a811eaa4.ngrok.io/api/contacts', contact)
+			var contactObject = {contacts: [contact]};
+    	$http.post('https://antisocialight.herokuapp.com/api/contacts', contactObject);
 	 		return $http({
 	  		method: 'POST',
-	  		url: 'http://a811eaa4.ngrok.io/api/contacts'
+	  		url: 'https://antisocialight.herokuapp.com/api/contacts'
 	  		})
 	  		.success(function(response){
-	  			$state.go('contacts')
+	  			$state.go('contacts');
 	  			return response.data;
 	  		})
 	  		.error(function(err){
-	  			console.error("cannot add contact",err)
-	  		})
+	  			console.error("cannot add contact",err);
+	  		});
 	  	};
-	})
+	});
 		// function onError(contactError) {
 		// 	$scope.error = contactError;
 		// 	//alert('onError!');
