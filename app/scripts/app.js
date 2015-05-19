@@ -8,8 +8,9 @@ angular.module('antiSocialite',
 	'config',
  	'LocalStorageModule',
 	'antiSocialite.controllers',
+	'ionic',
+	'ionic-timepicker',
 	'antiSocialite.services'])
-//
 
 	.config(['$stateProvider', '$urlRouterProvider', 'localStorageServiceProvider', function($stateProvider, $urlRouterProvider, localStorageServiceProvider) {
 		//var authenticated = ['$q', 'AuthFactory', function ($q, AuthFactory) {
@@ -62,21 +63,14 @@ angular.module('antiSocialite',
 				templateUrl: 'templates/queue.html',
 				abstract: true,
 				authenticate: true
-				//data:{
-				//	requireLogin: t`rue
-				//}
-				//resolve: {
-				//	authenticated: authenticated
-				//}
+
 			})
 			.state('queue.messages', {
 				url: '',
 				templateUrl: 'templates/messages.html',
 				controller: 'QueueCtrl',
 				authenticate: true
-				//resolve: {
-				//	authenticated: authenticated
-				//}
+
 			})
 			.state('addMessage', {
 				url: '/messages/:id',
@@ -157,7 +151,7 @@ angular.module('antiSocialite',
 		    cordova.plugins.backgroundMode.onactivate = function () {
 
 		        intervalID = setInterval(function () {
-		          Polling.pollForAndSendMessages();	
+		          Polling.pollForAndSendMessages();
 		        }, 60000);
 		    };
 

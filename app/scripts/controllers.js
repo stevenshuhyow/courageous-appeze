@@ -354,6 +354,9 @@ angular.module('antiSocialite.controllers', [])
       // .error(function () {
       //   $scope.loading = false;
       // });
+      //
+    $scope.slots = {epochTime: 12600, format: 12, step: 15};
+
     $scope.contactList = function(){
     	console.log("inside of contactList");
     	$state.go('contactList');

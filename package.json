@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "colors": "^1.1.0",
-    "end-of-stream": "^1.1.0",
     "event-stream": "^3.3.1",
     "ionic-app-lib": "0.0.20",
     "optimist": "^0.6.1",

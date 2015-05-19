@@ -6,6 +6,9 @@
               <span class="input-label">Date</span>
               <input type="date" ng-model="message.date">
             </label>
+            <ionic-timepicker etime="slots.epochTime" format="slots.format" step="slots.step">
+                <button class="button button-block button-positive"> {{slots.epochTime}} </button>
+            </ionic-timepicker>
             <button class="button button-full button-calm"  ng-click="contactList()">Add Recipient</button>
             <label class="item item-input">
                 <textarea placeholder="Content" rows="8" ng-model="message.text"></textarea>
