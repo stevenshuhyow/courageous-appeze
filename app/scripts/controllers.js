@@ -342,19 +342,6 @@ angular.module('antiSocialite.controllers', [])
 
 	.controller('MessageCtrl', function ($scope, $ionicPlatform, $ionicLoading, $state, $stateParams, localStorageService, Messages, Contacts, $http) {
 
-		    // Messages.addMessage(message)
-      // .success(function () {
-      //   $scope.message.contactId = '';
-      //   $scope.message.text = '';
-      //   $scope.message.date = '';
-      //   $scope.loading = false;
-      //   $scope.contact = '';
-      //   $scope.notification = 'Good work, your message is scheduled!';
-      // })
-      // .error(function () {
-      //   $scope.loading = false;
-      // });
-      //
     $scope.slots = {epochTime: 12600, format: 12, step: 15};
 
     $scope.contactList = function(){
@@ -362,13 +349,6 @@ angular.module('antiSocialite.controllers', [])
     	$state.go('contactList');
     };
 
-  //   function ContentController($scope, $ionicSideMenuDelegate) {
-  // 		$scope.toggleLeft = function() {
-  //   	$ionicSideMenuDelegate.toggleLeft();
-  // 		};
-		// }
-		//
-		//
 		$scope.message = {};
 
 		$scope.message.contactId = Contacts.recipients()[0];
