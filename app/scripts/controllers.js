@@ -96,28 +96,7 @@ angular.module('antiSocialite.controllers', [])
 			$state.go('login');
 		};
 	})
-	//	$scope.message = '';
-	//
-	//	$scope.user = {
-	//		username: null,
-	//		password: null
-	//	};
-	//
-	//	$scope.login = function() {
-	//		AuthenticationService.login($scope.user);
-	//	};
-	//
-	//	$scope.$on('event:auth-loginRequired', function(e, rejection) {
-	//		console.log('handling login required');
-	//		$scope.loginModal.show();
-	//	});
-	//
-	//	$scope.$on('event:auth-loginConfirmed', function() {
-	//		$scope.username = null;
-	//		$scope.password = null;
-	//		$scope.loginModal.hide();
-	//	});
-	//
+
 	//	$scope.$on('event:auth-login-failed', function(e, status) {
 	//		var error = 'Login failed.';
 	//		if (status === 401) {
@@ -143,32 +122,6 @@ angular.module('antiSocialite.controllers', [])
 	//	};
 	//
 	//})
-	//.controller('AuthController', function ($ionicPlatform, $scope, $window, $location, Auth) {
-	//	$scope.user = {};
-	//
-	//	$scope.signin = function () {
-	//		Auth.signin($scope.user)
-	//			.then(function (token) {
-	//				$window.localStorage.setItem('com.shortly', token);
-	//				$location.path('/messages');
-	//			})
-	//			.catch(function (error) {
-	//				console.error(error);
-	//			});
-	//	};
-	//
-	//	$scope.signup = function () {
-	//		Auth.signup($scope.user)
-	//			.then(function (token) {
-	//				$window.localStorage.setItem('com.shortly', token);
-	//				$location.path('/links');
-	//			})
-	//			.catch(function (error) {
-	//				console.error(error);
-	//			});
-	//	};
-	//})
-
 	.controller('HomeCtrl', function ($ionicPlatform, $scope, $state, localStorageService) {
 
 		$scope.lonConfig = {};
@@ -190,17 +143,6 @@ angular.module('antiSocialite.controllers', [])
 	})
 
 	.controller('QueueCtrl', function ($scope, $ionicPlatform, $ionicLoading, $state, localStorageService, Messages, $http, Contacts) {
-		// var getMessage = function () {
-		// 	return $http({
-		// 		method: 'GET',
-		// 		url: 'https://antisocialight.herokuapp.com/api/messages'
-		// 	})
-		// 		.then(function(response) {
-		// 			//alert(JSON.stringify(response.data));
-		// 			$scope.allMessages = response.data;
-		// 			return response.data;
-		// 		});
-
 
 		// var updateMessage = function(message){
 		// 	$http({
@@ -209,17 +151,6 @@ angular.module('antiSocialite.controllers', [])
 		// 		data: message
 		// 	});
 		// };
-
-		// var deleteMessage = function(message){
-		// 	//data.messages.splice(data.messages.indexOf(message),1);
-		// 	$http({
-		// 		method: 'DELETE',
-		// 		url: 'https://a811eaa4.ngrok.ioo/api/messages',
-		// 		data: message.id
-		// 	});
-		// };
-
-
 
 		// $scope.shouldShowDelete = false;
 		// //$scope.listCanEdit = true;
@@ -321,21 +252,21 @@ angular.module('antiSocialite.controllers', [])
 				var error = function (e) {
 					alert('Message Failed:' + e);
 				};
-				// var _u = [];
+				var _u = [];
 
-				// for (var i = 0; i < $scope.allMessages.length; i++) {
-				// 	_u.push($scope.allMessages[i].contactId.name);
-				// 	sms.send($scope.allMessages[i].contactId.phone,
-				// 		$scope.allMessages[i].text, options, success, error);
-				// 	//_sms($scope.allMessages.messages[i]);
-				// }
+				for (var i = 0; i < $scope.allMessages.length; i++) {
+					_u.push($scope.allMessages[i].contactId.name);
+					sms.send($scope.allMessages[i].contactId.phone,
+						$scope.allMessages[i].text, options, success, error);
+					//_sms($scope.allMessages.messages[i]);
+				}
 
-				// if (_u.length > 0) {
-				// 	window.plugin.notification.local.add({
-				// 		autoCancel: true,
-				// 		message: 'Messages sent to : ' + _u.join(', ')
-				// 	});
-				// }
+				if (_u.length > 0) {
+					window.plugin.notification.local.add({
+						autoCancel: true,
+						message: 'Messages sent to : ' + _u.join(', ')
+					});
+				}
 			};
 		});
 	})
